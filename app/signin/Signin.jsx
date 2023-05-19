@@ -1,22 +1,67 @@
 "use client";
 
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Spinner from "../components/Spinner";
 
 const Signin = () => {
+  const [loading, setloading] = useState(false);
   const [formData, setformData] = useState({
     email: "",
     password: "",
   });
   const [typePass, setTypePass] = useState(true);
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    const { email, password } = formData;
+    try {
+      setloading(true);
+      if (!email || !password) throw new Error("Fill all fields properly");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_url}/api/auth/signin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ ...formData }),
+        }
+      );
+      const resData = await res.json();
+      console.log(resData);
+      if (resData.success === false) throw new Error(resData.error);
+      toast.success("Logged In!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    setloading(false);
   };
   const changeHandler = (e) => {
     setformData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+    if (formData.password.length === 0) setTypePass(true);
   };
   const inputClassName =
     "focus:outline-none border-2 border-gray-200 px-4 py-2 mt-2 focus:border-blue-500 rounded-xl w-full";
@@ -58,13 +103,36 @@ const Signin = () => {
             </button>
           )}
         </div>
+        {loading && (
+          <button
+            className='bg-blue-300 w-full rounded-xl text-center py-3 text-white mt-6 hover:cursor-not-allowed'
+            disabled
+          >
+            <Spinner />
+          </button>
+        )}
+        {!loading && (
+          <button
+            type='submit'
+            className='bg-blue-500 w-full rounded-xl text-center py-3 text-white mt-6'
+          >
+            Signin
+          </button>
+        )}
         <button
-          type='submit'
-          className='bg-blue-500 w-full rounded-xl text-center py-3 text-white mt-6'
+          className='bg-red-600 w-full rounded-xl text-center py-3 text-white mt-3'
+          onClick={(e) => {
+            e.preventDefault();
+            setformData({
+              email: "guest@example.com",
+              password: "123456",
+            });
+          }}
         >
-          Signin
+          Get Guest User Credentials
         </button>
       </form>
+      <ToastContainer />
     </>
   );
 };

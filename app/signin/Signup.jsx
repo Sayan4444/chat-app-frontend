@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Spinner from "../components/Spinner";
 
 const Signup = () => {
+  const [loading, setloading] = useState(false);
   const [formData, setformData] = useState({
     name: "",
     email: "",
@@ -11,10 +15,55 @@ const Signup = () => {
     picture: "",
   });
   const [typePass, setTypePass] = useState(true);
-  const submitHandler = (e) => {
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    const { name, email, password, confirmPassword } = formData;
+    try {
+      setloading(true);
+      if (!name || !email || !password || !confirmPassword)
+        throw new Error("Fill all fields properly");
+      if (password !== confirmPassword)
+        throw new Error("password and confirm password not matching");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_url}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ ...formData }),
+        }
+      );
+
+      const resData = await res.json();
+      if (resData.success === false) throw new Error(resData.error);
+      toast.success("Registered successfully!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    setloading(false);
   };
+
   const changeHandler = (e) => {
     setformData((prev) => ({
       ...prev,
@@ -22,6 +71,22 @@ const Signup = () => {
     }));
     if (formData.password.length === 0) setTypePass(true);
   };
+
+  const handlePictureChange = (e) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      setformData((prev) => ({
+        ...prev,
+        picture: reader.result,
+      }));
+      console.log(reader.result);
+    };
+    reader.onerror = (err) => {
+      console.log("Error", err);
+    };
+  };
+
   const inputClassName =
     "focus:outline-none border-2 border-gray-200 px-4 py-2 mt-2 focus:border-blue-500 rounded-xl w-full";
 
@@ -82,32 +147,38 @@ const Signup = () => {
         <input
           type='password'
           name='confirmPassword'
-          autocomplete='off'
+          autoComplete='off'
           placeholder='Confirm password'
           className={inputClassName}
           value={formData.confirmPassword}
           onChange={changeHandler}
         />
-        <div className={titleClassName}>
-          Upload Picture <span className='text-red-600'>*</span>
-        </div>
+        <div className={titleClassName}>Upload Picture</div>
         <input
           type='file'
           name='picture'
-          placeholder='Confirm password'
           accept='image/*'
-          onChange={(e) => {
-            const file = e.target.files[0];
-            console.log(file);
-          }}
+          onChange={handlePictureChange}
         />
-        <button
-          type='submit'
-          className='bg-blue-500 w-full rounded-xl text-center py-3 text-white mt-6'
-        >
-          Signup
-        </button>
+        {loading && (
+          <button
+            className='bg-blue-300 w-full rounded-xl text-center py-3 text-white mt-6 hover:cursor-not-allowed'
+            disabled
+          >
+            <Spinner />
+          </button>
+        )}
+
+        {!loading && (
+          <button
+            type='submit'
+            className='bg-blue-600 w-full rounded-xl text-center py-3 text-white mt-6'
+          >
+            Signup
+          </button>
+        )}
       </form>
+      <ToastContainer />
     </>
   );
 };
