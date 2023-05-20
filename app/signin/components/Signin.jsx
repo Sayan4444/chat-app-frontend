@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Spinner from "../components/Spinner";
+import Spinner from "../../components/Spinner";
+import { useRouter } from "next/navigation";
+import { useContextProvider } from "@/app/Context/Store";
 
 const Signin = () => {
+  const { setUserData } = useContextProvider();
+  const router = useRouter();
   const [loading, setloading] = useState(false);
   const [formData, setformData] = useState({
     email: "",
@@ -30,18 +34,9 @@ const Signin = () => {
         }
       );
       const resData = await res.json();
-      console.log(resData);
       if (resData.success === false) throw new Error(resData.error);
-      toast.success("Logged In!", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
+      setUserData(resData.user);
+      router.push("/");
     } catch (error) {
       toast.error(error.message, {
         position: "top-center",

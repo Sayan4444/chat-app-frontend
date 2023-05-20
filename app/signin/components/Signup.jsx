@@ -3,9 +3,12 @@
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Spinner from "../components/Spinner";
+import Spinner from "../../components/Spinner";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
+  const { setUserData } = useContextProvider();
+  const router = useRouter();
   const [loading, setloading] = useState(false);
   const [formData, setformData] = useState({
     name: "",
@@ -39,16 +42,8 @@ const Signup = () => {
 
       const resData = await res.json();
       if (resData.success === false) throw new Error(resData.error);
-      toast.success("Registered successfully!", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
+      setUserData(resData.user);
+      router.push("/");
     } catch (error) {
       toast.error(error.message, {
         position: "top-center",
@@ -182,5 +177,5 @@ const Signup = () => {
     </>
   );
 };
-
+// TODO: remove all console.log
 export default Signup;
