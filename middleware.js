@@ -1,23 +1,35 @@
 import { NextResponse } from 'next/server';
 
 export async function middleware(req) {
-    try {
+
+    if (req.nextUrl.pathname === '/signin') {
         const token = req.cookies.get('token')?.value;
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_url}/api/auth/me`, {
-            // credentials: 'include',
-            headers: { "Authorization": `Bearer ${token}` },
-            cache: 'no-cache'
-        })
-        const data = await res.json();
-        if (req.nextUrl.pathname.startsWith('/signin')) {
-            return NextResponse.redirect(new URL(req.nextUrl.origin))
-        }
+        if (!token) return NextResponse.next();
+        const resData = await protect(token);
+        if (resData.success === "true") return NextResponse.redirect(new URL('/', req.nextUrl.origin));
         return NextResponse.next();
     }
-    catch {
-        if (req.nextUrl.pathname === '/') return NextResponse.redirect(new URL('/signin', req.pathname.origin));
-        return NextResponse.next();
+
+
+    else if (req.nextUrl.pathname === '/') {
+        const token = req.cookies.get('token')?.value;
+        if (!token) return NextResponse.redirect(new URL('/signin', req.nextUrl.origin));
+        try {
+            const resData = await protect(token);
+            if (resData.success === "false") throw new Error();
+            return NextResponse.next();
+        } catch (error) {
+            return NextResponse.redirect(new URL('/signin', req.nextUrl.origin));
+        }
+    }
+
+    async function protect(token) {
+        const res = await fetch(`${req.nextUrl.origin}/api/auth/protect`, {
+            headers: { Authorization: `Bearer ${token}` },
+            cache: 'no-cache'
+        })
+        const resData = await res.json();
+        return resData;
     }
 }
 

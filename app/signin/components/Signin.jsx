@@ -20,17 +20,13 @@ const Signin = () => {
     try {
       setloading(true);
       if (!email || !password) throw new Error("Fill all fields properly");
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_url}/api/auth/signin`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ ...formData }),
-        }
-      );
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData }),
+      });
       const resData = await res.json();
       if (resData.success === false) throw new Error(resData.error);
       router.push("/");
