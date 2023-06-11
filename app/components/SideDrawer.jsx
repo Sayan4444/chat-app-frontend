@@ -1,12 +1,10 @@
 "use client";
 import { useContextProvider } from "../Context/Store";
 import { RxCross2 } from "react-icons/rx";
-import protectedRoutes from "../utils/protectedRoutes";
 
 const SideDrawer = () => {
   const { sideDrawerActive, setSideDrawerActive } = useContextProvider();
 
-  // protectedRoutes();
   return (
     <>
       {/* Backdrop */}

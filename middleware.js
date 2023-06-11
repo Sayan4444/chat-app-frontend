@@ -24,22 +24,19 @@ export async function middleware(req) {
     }
 
     async function protect(token) {
-        const res = await fetch(`${req.nextUrl.origin}/api/auth/protect`, {
-            headers: { Authorization: `Bearer ${token}` },
-            cache: 'no-cache'
-        })
-        const resData = await res.json();
-        return resData;
+        try {
+            const secret = new TextEncoder().encode(process.env.JWT_SECRET)
+
+            await jwtVerify(token, secret);
+
+            return NextResponse.json({ success: 'true', user });
+        } catch (error) {
+            return NextResponse.json({ success: 'false', error: 'Unauthorized' }, { status: 401 })
+        }
+
     }
 }
 
 export const config = {
-    matcher: ['/', '/signin']
+    matcher: ['/', '/signin'],
 };
-
-// req.nextUrl.pathname-> gets the name of the final url to which the page will be going
-
-// localhost:3000
-// server->client cookies access!!
-
-// Express:- 4000
