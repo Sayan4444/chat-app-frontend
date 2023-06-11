@@ -38,3 +38,8 @@ export const config = {
 };
 
 // req.nextUrl.pathname-> gets the name of the final url to which the page will be going
+
+// localhost:3000
+// server->client cookies access!!
+
+// Express:- 4000

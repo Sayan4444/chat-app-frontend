@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../../components/Spinner";
 import { useRouter } from "next/navigation";
+import { useContextProvider } from "@/app/Context/Store";
 
 const Signup = () => {
   const { setUserData } = useContextProvider();
@@ -28,17 +29,13 @@ const Signup = () => {
         throw new Error("Fill all fields properly");
       if (password !== confirmPassword)
         throw new Error("password and confirm password not matching");
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_url}/api/auth/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ ...formData }),
-        }
-      );
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData }),
+      });
 
       const resData = await res.json();
       if (resData.success === false) throw new Error(resData.error);

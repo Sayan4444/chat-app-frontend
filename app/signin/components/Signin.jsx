@@ -5,8 +5,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../../components/Spinner";
 import { useRouter } from "next/navigation";
+import { useContextProvider } from "@/app/Context/Store";
 
 const Signin = () => {
+  const { setUserData } = useContextProvider();
   const router = useRouter();
   const [loading, setloading] = useState(false);
   const [formData, setformData] = useState({
@@ -29,6 +31,7 @@ const Signin = () => {
       });
       const resData = await res.json();
       if (resData.success === false) throw new Error(resData.error);
+      setUserData(resData.user);
       router.push("/");
     } catch (error) {
       toast.error(error.message, {
