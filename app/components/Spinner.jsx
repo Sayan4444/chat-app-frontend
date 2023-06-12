@@ -1,11 +1,14 @@
 import React from "react";
 
-const Spinner = () => {
+export default function Spinner({ size, color }) {
+  if (!size) size = "w-6 h-6";
+  if (!color) color = "text-gray-200 fill-blue-600";
+  const property = size + " " + color;
   return (
     <div role='status'>
       <svg
         aria-hidden='true'
-        className='inline w-6 h-6 mr-2 text-gray-200 animate-spin fill-blue-600'
+        className={`inline mr-2 animate-spin ${property}`}
         viewBox='0 0 100 101'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
@@ -22,6 +25,4 @@ const Spinner = () => {
       <span className='sr-only'>Loading...</span>
     </div>
   );
-};
-
-export default Spinner;
+}

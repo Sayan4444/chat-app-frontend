@@ -7,6 +7,7 @@ export async function GET(req) {
     try {
         await connectDB();
         const users = await User.find({ name: { $regex: `^${name}`, $options: 'i' } })
+        if (users.length === 0) throw new Error;
         return NextResponse.json({ success: 'true', users })
     } catch (error) {
         return NextResponse.json({ success: 'false', error: 'No user found' }, { status: 400 })

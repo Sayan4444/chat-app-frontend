@@ -1,6 +1,5 @@
 "use client";
 import { FaBell } from "react-icons/fa";
-import { RxAvatar } from "react-icons/rx";
 import { MdArrowDropDown } from "react-icons/md";
 import DropdownMenu from "./DropdownMenu";
 import { useState } from "react";
@@ -25,7 +24,6 @@ export default function Profile({ setShowProfileModal, userData }) {
           alt='avatar'
           className='rounded-[50%]'
         />
-        {/* <RxAvatar className='text-3xl' /> */}
         <MdArrowDropDown />
       </button>
       {showDropdown && (
