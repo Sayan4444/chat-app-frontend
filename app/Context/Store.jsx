@@ -5,7 +5,6 @@ export const Context = createContext();
 export const useContextProvider = () => useContext(Context);
 
 export default function Store({ children }) {
-  const [sideDrawerActive, setSideDrawerActive] = useState(false);
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
@@ -17,8 +16,6 @@ export default function Store({ children }) {
   }, []);
 
   const obj = {
-    sideDrawerActive,
-    setSideDrawerActive,
     userData,
     setUserData,
   };

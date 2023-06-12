@@ -5,6 +5,7 @@ mongoose.set('strictQuery', false);
 const DB = process.env.MONGO_URI;
 
 export default async function connectDB() {
+    if (mongoose.connection.readyState) return;
     try {
         await mongoose.connect(DB)
         // console.log("connected to mongoDB server");

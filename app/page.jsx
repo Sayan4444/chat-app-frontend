@@ -1,19 +1,38 @@
-import SideDrawer from "./components/SideDrawer";
-import MyChat from "./components/MyChat";
-import ChatUsers from "./components/ChatUsers";
-import Navbar from "./components/Navbar";
+"use client";
+import SideDrawer from "./SideDrawer/SideDrawer";
+import MyChat from "./MyChat/MyChat";
+import ChatUsers from "./ChatUsers/ChatUsers";
+import Navbar from "./Navbar/Navbar";
+import { useState } from "react";
+import ProfileModal from "./ProfileModal/ProfileModal";
+import { useContextProvider } from "./Context/Store";
 
-const Home = () => {
+export default function Home() {
+  const { userData } = useContextProvider();
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [sideDrawerActive, setSideDrawerActive] = useState(false);
+
   return (
     <>
-      <SideDrawer />
-      <Navbar />
+      <SideDrawer
+        sideDrawerActive={sideDrawerActive}
+        setSideDrawerActive={setSideDrawerActive}
+      />
+      <Navbar
+        setShowProfileModal={setShowProfileModal}
+        setSideDrawerActive={setSideDrawerActive}
+        userData={userData}
+      />
       <div className='flex space-x-4 mx-3 h-screen'>
         <ChatUsers />
         <MyChat />
       </div>
+      {showProfileModal && (
+        <ProfileModal
+          userData={userData}
+          setShowProfileModal={setShowProfileModal}
+        />
+      )}
     </>
   );
-};
-
-export default Home;
+}
