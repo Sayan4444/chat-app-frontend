@@ -1,11 +1,11 @@
-import connectDB from "@/config/db";
+import dbConnect from "@/dbConnect/dbConnect";
 import User from "@/model/User";
 import { NextResponse } from "next/server";
 import sendTokenResponse from "../util/sendTokenResponse";
 
 export async function POST(req) {
     try {
-        await connectDB();
+        await dbConnect();
         const obj = await req.json();
         const { email, picture } = obj;
         if (picture.length === 0) delete obj.picture

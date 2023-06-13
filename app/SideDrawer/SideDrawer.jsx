@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 import SearchedUser from "./SearchedUser";
 import Loading from "./Loading";
 
-export default function SideDrawer({ sideDrawerActive, setSideDrawerActive }) {
+export default function SideDrawer({
+  sideDrawerActive,
+  setSideDrawerActive,
+  setSelectedUserData,
+}) {
   const [inputValue, setInputValue] = useState("");
   const [userLoading, setUserLoading] = useState(false);
   const [users, setUsers] = useState([]);
@@ -34,7 +38,10 @@ export default function SideDrawer({ sideDrawerActive, setSideDrawerActive }) {
       >
         <div className='flex justify-between mx-4 mt-2 items-center'>
           <div className='text-xl font-bold'> Search Users</div>
-          <button onClick={() => setSideDrawerActive(false)}>
+          <button
+            className='hoverEffect hover:bg-gray-200 hover:scale-125 rounded-[50%] p-2'
+            onClick={() => setSideDrawerActive(false)}
+          >
             <RxCross2 size={20} />
           </button>
         </div>
@@ -51,7 +58,12 @@ export default function SideDrawer({ sideDrawerActive, setSideDrawerActive }) {
         {users.length !== 0 && (
           <div className='mx-4 flex flex-col space-y-3'>
             {users.map((user) => (
-              <SearchedUser user={user} key={user._id} />
+              <SearchedUser
+                user={user}
+                key={user._id}
+                setSelectedUserData={setSelectedUserData}
+                setSideDrawerActive={setSideDrawerActive}
+              />
             ))}
           </div>
         )}

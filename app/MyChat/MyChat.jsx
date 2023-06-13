@@ -1,24 +1,21 @@
 "use client";
-import { AiFillEye } from "react-icons/ai";
 
-const MyChat = () => {
+import { AiOutlinePlus } from "react-icons/ai";
+
+export default function ChatUsers() {
   return (
-    <div className='bg-white mb-20 mt-4 py-4 w-full rounded-xl'>
-      <div className='flex justify-between w-full px-6'>
-        <div className='text-2xl'>Sayan</div>
-        <button>
-          <AiFillEye />
-        </button>
+    <>
+      <div className='bg-white mb-20 mt-4 px-6 py-4 w-[55%] rounded-xl'>
+        <div className='flex justify-between w-full'>
+          <div className='text-2xl'>My Chats</div>
+          <button className='flex items-center space-x-2 bg-gray-200 rounded-xl px-3 py-2 hoverEffect hover:bg-gray-300'>
+            <span>New Group Chat</span>
+            <span>
+              <AiOutlinePlus />
+            </span>
+          </button>
+        </div>
       </div>
-      <div className='bg-gray-200 my-3 h-[93%] rounded-xl mx-2 relative'>
-        <input
-          type='text'
-          placeholder='Enter message'
-          className='absolute bottom-0 bg-gray-300 rounded-xl w-full pl-4 py-3 focus:outline-none focus:border-2 focus:border-blue-500'
-        />
-      </div>
-    </div>
+    </>
   );
-};
-
-export default MyChat;
+}

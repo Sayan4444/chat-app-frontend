@@ -4,6 +4,7 @@ import SearchUser from "./components/SearchUser";
 import Profile from "./components/Profile/Profile";
 
 export default function Navbar({
+  showProfileModal,
   setShowProfileModal,
   setSideDrawerActive,
   userData,
@@ -14,6 +15,7 @@ export default function Navbar({
         <SearchUser setSideDrawerActive={setSideDrawerActive} />
         <div className='text-xl'>Talk-A-Tive</div>
         <Profile
+          showProfileModal={showProfileModal}
           setShowProfileModal={setShowProfileModal}
           userData={userData}
         />

@@ -1,11 +1,11 @@
-import connectDB from "@/config/db";
+import dbConnect from "@/dbConnect/dbConnect";
 import User from "@/model/User";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
     const name = req.nextUrl.searchParams.get('search');
     try {
-        await connectDB();
+        await dbConnect();
         const users = await User.find({ name: { $regex: `^${name}`, $options: 'i' } })
         if (users.length === 0) throw new Error;
         return NextResponse.json({ success: 'true', users })

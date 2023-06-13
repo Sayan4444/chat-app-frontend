@@ -4,7 +4,7 @@ mongoose.set('strictQuery', false);
 
 const DB = process.env.MONGO_URI;
 
-export default async function connectDB() {
+export default async function () {
     if (mongoose.connection.readyState) return;
     try {
         await mongoose.connect(DB)

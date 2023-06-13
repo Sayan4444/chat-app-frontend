@@ -1,8 +1,8 @@
-import connectDB from "@/config/db";
+import dbConnect from "@/dbConnect/dbConnect";
 import { NextResponse } from "next/server";
 
 export async function POST() {
-    await connectDB();
+    await dbConnect();
     const res = NextResponse.json({ 'success': 'true' })
     res.cookies.delete('token')
     return res;

@@ -1,0 +1,14 @@
+**In this whole docs chat refers to Chat Model and message to the Message Model
+
+Models
+
+1. We have two models Chat & Message
+2. Chat-> It stores the members doing a chat. For example if we are doing a group chat . Chat model is responsible to store the MEMBERS of the group, name of the admin and the name of the group
+3. Message-> It actually stores the message and name of the sender who sent the message
+
+Controllers
+
+/api/chat(POST)-> This gives you the 1-2-1 chats for the logged in user and another user id. If not present it will create one for you. Note it does not gives you the message but only the chat(the model)
+/api/chat(POST)-> This gives you all the 1-2-1 chats for the logged in user
+/api/chat/group(POST)-> Create a new group
+/api/chat/group(DELETE)-> Delete an exsisting group
