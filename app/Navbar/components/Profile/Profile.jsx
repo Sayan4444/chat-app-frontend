@@ -4,13 +4,10 @@ import { MdArrowDropDown } from "react-icons/md";
 import DropdownMenu from "./DropdownMenu";
 import { useState } from "react";
 import Image from "next/image";
-import ProfileModal from "@/app/ProfileModal/ProfileModal";
+import { useContextProvider } from "@/app/Context/Store";
 
-export default function Profile({
-  showProfileModal,
-  setShowProfileModal,
-  userData,
-}) {
+export default function Profile() {
+  const { userData } = useContextProvider();
   const { picture } = userData;
   const [showDropdown, setShowdropDown] = useState(false);
   return (
@@ -32,14 +29,7 @@ export default function Profile({
           />
           <MdArrowDropDown />
         </button>
-        {showDropdown && (
-          <DropdownMenu
-            showProfileModal={showProfileModal}
-            setShowdropDown={setShowdropDown}
-            setShowProfileModal={setShowProfileModal}
-            userData={userData}
-          />
-        )}
+        {showDropdown && <DropdownMenu setShowdropDown={setShowdropDown} />}
       </div>
     </>
   );

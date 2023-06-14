@@ -6,6 +6,12 @@ export const useContextProvider = () => useContext(Context);
 
 export default function Store({ children }) {
   const [userData, setUserData] = useState({});
+  const [selectedUserData, setSelectedUserData] = useState({}); //user details selected by finding in search bar / My Chats
+  const [selectedUserChat, setSelectedUserChat] = useState({});
+  const [showProfileModal, setShowProfileModal] = useState(false); //Bell Button
+  const [showSelectedUserProfileModal, setShowSelectedUserProfileModal] =
+    useState(false); //Eye Button
+  const [sideDrawerActive, setSideDrawerActive] = useState(false); //Side Drawer
 
   useEffect(() => {
     (async () => {
@@ -18,6 +24,16 @@ export default function Store({ children }) {
   const obj = {
     userData,
     setUserData,
+    selectedUserData,
+    setSelectedUserData,
+    selectedUserChat,
+    setSelectedUserChat,
+    showProfileModal,
+    setShowProfileModal,
+    showSelectedUserProfileModal,
+    setShowSelectedUserProfileModal,
+    sideDrawerActive,
+    setSideDrawerActive,
   };
   return <Context.Provider value={obj}>{children}</Context.Provider>;
 }

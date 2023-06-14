@@ -4,12 +4,10 @@ import Backdrop from "../components/Backdrop";
 import { useEffect, useState } from "react";
 import SearchedUser from "./SearchedUser";
 import Loading from "./Loading";
+import { useContextProvider } from "../Context/Store";
 
-export default function SideDrawer({
-  sideDrawerActive,
-  setSideDrawerActive,
-  setSelectedUserData,
-}) {
+export default function SideDrawer() {
+  const { sideDrawerActive, setSideDrawerActive } = useContextProvider();
   const [inputValue, setInputValue] = useState("");
   const [userLoading, setUserLoading] = useState(false);
   const [users, setUsers] = useState([]);
@@ -58,12 +56,7 @@ export default function SideDrawer({
         {users.length !== 0 && (
           <div className='mx-4 flex flex-col space-y-3'>
             {users.map((user) => (
-              <SearchedUser
-                user={user}
-                key={user._id}
-                setSelectedUserData={setSelectedUserData}
-                setSideDrawerActive={setSideDrawerActive}
-              />
+              <SearchedUser user={user} key={user._id} />
             ))}
           </div>
         )}

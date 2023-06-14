@@ -1,11 +1,9 @@
 import Image from "next/image";
+import { useContextProvider } from "../Context/Store";
 
-export default function SearchedUser({
-  user,
-  setSelectedUserData,
-  setSideDrawerActive,
-}) {
-  const { name, email, picture } = user;
+export default function SearchedUser({ user }) {
+  const { setSelectedUserData, setSideDrawerActive } = useContextProvider();
+  const { name, picture } = user;
   return (
     <>
       <div

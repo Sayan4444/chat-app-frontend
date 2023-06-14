@@ -3,22 +3,13 @@
 import SearchUser from "./components/SearchUser";
 import Profile from "./components/Profile/Profile";
 
-export default function Navbar({
-  showProfileModal,
-  setShowProfileModal,
-  setSideDrawerActive,
-  userData,
-}) {
+export default function Navbar() {
   return (
     <>
       <nav className='w-screen bg-white flex justify-between items-center py-5 px-5'>
-        <SearchUser setSideDrawerActive={setSideDrawerActive} />
+        <SearchUser />
         <div className='text-xl'>Talk-A-Tive</div>
-        <Profile
-          showProfileModal={showProfileModal}
-          setShowProfileModal={setShowProfileModal}
-          userData={userData}
-        />
+        <Profile />
       </nav>
     </>
   );

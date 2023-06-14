@@ -11,4 +11,3 @@ Controllers
 /api/chat(POST)-> This gives you the 1-2-1 chats for the logged in user and another user id. If not present it will create one for you. Note it does not gives you the message but only the chat(the model)
 /api/chat(POST)-> This gives you all the 1-2-1 chats for the logged in user
 /api/chat/group(POST)-> Create a new group
-/api/chat/group(DELETE)-> Delete an exsisting group

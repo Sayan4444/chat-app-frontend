@@ -3,9 +3,9 @@
 import { useContextProvider } from "@/app/Context/Store";
 import { useRouter } from "next/navigation";
 
-export default function DropdownMenu({ setShowdropDown, setShowProfileModal }) {
+export default function DropdownMenu({ setShowdropDown }) {
   const router = useRouter();
-  const { setUserData } = useContextProvider();
+  const { setUserData, setShowProfileModal } = useContextProvider();
   return (
     <>
       <div

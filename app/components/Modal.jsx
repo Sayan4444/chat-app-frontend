@@ -2,11 +2,7 @@ import React from "react";
 import Backdrop from "./Backdrop";
 import { RxCross2 } from "react-icons/rx";
 
-export default function Modal({
-  children,
-  setShowProfileModal,
-  setShowSelectedUserProfileModal,
-}) {
+export default function Modal({ children, setShowModal }) {
   return (
     <>
       <div onClick={clickHandler}>
@@ -30,7 +26,6 @@ export default function Modal({
     </>
   );
   function clickHandler() {
-    if (setShowProfileModal) setShowProfileModal(false);
-    if (setShowSelectedUserProfileModal) setShowSelectedUserProfileModal(false);
+    setShowModal(false);
   }
 }
