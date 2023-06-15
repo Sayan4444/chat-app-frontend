@@ -7,7 +7,7 @@ import Spinner from "../../components/Spinner";
 import { useRouter } from "next/navigation";
 import { useContextProvider } from "@/app/Context/Store";
 
-const Signin = () => {
+export default function Signin() {
   const { setUserData } = useContextProvider();
   const router = useRouter();
   const [loading, setloading] = useState(false);
@@ -16,44 +16,7 @@ const Signin = () => {
     password: "",
   });
   const [typePass, setTypePass] = useState(true);
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    const { email, password } = formData;
-    try {
-      setloading(true);
-      if (!email || !password) throw new Error("Fill all fields properly");
-      const res = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData }),
-      });
-      const resData = await res.json();
-      if (resData.success === false) throw new Error(resData.error);
-      setUserData(resData.user);
-      router.push("/");
-    } catch (error) {
-      toast.error(error.message, {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-    setloading(false);
-  };
-  const changeHandler = (e) => {
-    setformData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    if (formData.password.length === 0) setTypePass(true);
-  };
+
   const inputClassName =
     "focus:outline-none border-2 border-gray-200 px-4 py-2 mt-2 focus:border-blue-500 rounded-xl w-full";
   return (
@@ -126,6 +89,46 @@ const Signin = () => {
       <ToastContainer />
     </>
   );
-};
 
-export default Signin;
+  function changeHandler(e) {
+    setformData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+    if (formData.password.length === 0) setTypePass(true);
+  }
+
+  async function submitHandler(e) {
+    e.preventDefault();
+    const { email, password } = formData;
+    try {
+      setloading(true);
+      if (!email || !password) throw new Error("Fill all fields properly");
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData }),
+      });
+
+      const resData = await res.json();
+      if (resData.success === "false") throw new Error(resData.error);
+      setUserData(resData.user);
+      router.push("/");
+    } catch (error) {
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    setloading(false);
+    return;
+  }
+}

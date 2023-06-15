@@ -38,7 +38,7 @@ const Signup = () => {
       });
 
       const resData = await res.json();
-      if (resData.success === false) throw new Error(resData.error);
+      if (resData.success === "false") throw new Error(resData.error);
       setUserData(resData.user);
       router.push("/");
     } catch (error) {

@@ -5,22 +5,23 @@ import { useEffect, useState } from "react";
 import SearchedUser from "./SearchedUser";
 import Loading from "./Loading";
 import { useContextProvider } from "../Context/Store";
+import searchUser from "../utils/searchUser";
 
 export default function SideDrawer() {
   const { sideDrawerActive, setSideDrawerActive } = useContextProvider();
-  const [inputValue, setInputValue] = useState("");
+  const [userName, setUserName] = useState("");
   const [userLoading, setUserLoading] = useState(false);
   const [users, setUsers] = useState([]); //searched users
   const [errMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     let timeoutId = setTimeout(async () => {
-      await searchUser();
+      await searchUser(setUsers, setErrorMessage, setUserLoading, userName);
     }, 300);
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [inputValue]);
+  }, [userName]);
 
   return (
     <>
@@ -49,8 +50,8 @@ export default function SideDrawer() {
             type='text'
             className='focus:outline-none border-2 focus:border-blue-500  rounded-lg pl-4 py-2 w-full'
             placeholder='enter name'
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
           />
         </div>
         {/* Displaying users array */}
@@ -71,31 +72,4 @@ export default function SideDrawer() {
       {/* Displaying users array */}
     </>
   );
-
-  async function searchUser() {
-    setUsers([]);
-    setErrorMessage("");
-    setUserLoading(true);
-
-    // Case 1 :when input field has no value
-    if (inputValue.length == 0) {
-      setUserLoading(false);
-      return;
-    }
-
-    const res = await fetch(`/api/user?search=${inputValue}`, {
-      cache: "no-cache",
-    });
-    const resData = await res.json();
-    // Case 2: when input field value is false
-    if (resData.success === "false") {
-      setUserLoading(false);
-      setErrorMessage(resData.error);
-      return;
-    }
-    // Case 3: input field value is true
-    const { users } = resData;
-    setUserLoading(false);
-    setUsers(users);
-  }
 }
