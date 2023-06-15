@@ -2,22 +2,13 @@ import Image from "next/image";
 import { useContextProvider } from "../Context/Store";
 
 export default function SearchedUser({ user }) {
-  const {
-    setSelectedUserData,
-    setSideDrawerActive,
-    chats,
-    setChats,
-    setSelectedChatIndex,
-  } = useContextProvider();
+  const { setSideDrawerActive, chats, setChats, setSelectedChatIndex } =
+    useContextProvider();
   const { name, picture, _id } = user;
   return (
     <>
       <div
-        onClick={async () => {
-          setSelectedUserData(user);
-          setSideDrawerActive(false);
-          await getChat();
-        }}
+        onClick={clickHandler}
         className='bg-gray-200 px-3 py-2 text-left rounded-xl hover:bg-cyan-600 hover:cursor-pointer hover:text-white transition-all duration-300'
       >
         <div className='flex items-center space-x-6'>
@@ -37,19 +28,27 @@ export default function SearchedUser({ user }) {
       </div>
     </>
   );
-  async function getChat() {
+
+  async function clickHandler() {
+    setSideDrawerActive(false);
     const selectedUserId = _id;
+    //If chat already esists
+    for (let index = 0; index < chats.length; index++) {
+      const chat = chats[index];
+      if (chat.isGroupChat) continue;
+      if (
+        chat.users[0]._id === selectedUserId ||
+        chat.users[1]._id === selectedUserId
+      )
+        return setSelectedChatIndex(index);
+    }
+    //Creating new chat
     const res = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({ otherUserId: selectedUserId }),
     });
     const resData = await res.json();
     const { chat } = resData;
-    for (let i = 0; i < chats.length; i++) {
-      if (chats[i]._id === chat._id) {
-        return setSelectedChatIndex(i);
-      }
-    }
     setChats((prev) => [chat, ...prev]);
     setSelectedChatIndex(0);
   }

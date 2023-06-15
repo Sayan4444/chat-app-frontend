@@ -7,8 +7,14 @@ import { useContextProvider } from "../Context/Store";
 import Loading from "./Loading";
 
 export default function ChatUsers() {
-  const { userData, chats, setChats, selectedChatIndex, setSelectedChatIndex } =
-    useContextProvider();
+  const {
+    userData,
+    chats,
+    setChats,
+    selectedChatIndex,
+    setSelectedChatIndex,
+    setSelectedUserData,
+  } = useContextProvider();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -16,6 +22,17 @@ export default function ChatUsers() {
       await getChats();
     })();
   }, []);
+
+  useEffect(() => {
+    if (selectedChatIndex === -1) return;
+    const loggedinId = userData._id;
+    const chat = chats[selectedChatIndex];
+    if (chat.isGroupChat === true) return;
+    const { users } = chat;
+    if (users[0]._id !== loggedinId) return setSelectedUserData(users[0]);
+    return setSelectedUserData(users[1]);
+  }, [selectedChatIndex]);
+
   return (
     <>
       <div className='bg-white mb-20 mt-4 px-6 py-4 w-[55%] rounded-xl relative'>

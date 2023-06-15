@@ -36,7 +36,7 @@ export default function ProfileModal({ type }) {
               onClick={() => window.open(picture, "_blank")}
             />
           </div>
-          <div className='ml-10 self-start text-3xl'>
+          <div className='text-center text-3xl'>
             <div>Email:</div>
             <div>{email}</div>
           </div>

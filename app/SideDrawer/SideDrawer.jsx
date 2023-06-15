@@ -53,6 +53,7 @@ export default function SideDrawer() {
             onChange={(e) => setInputValue(e.target.value)}
           />
         </div>
+        {/* Displaying users array */}
         {users.length !== 0 && (
           <div className='mx-4 flex flex-col space-y-3'>
             {users.map((user) => (
@@ -67,6 +68,7 @@ export default function SideDrawer() {
         )}
         {userLoading && <Loading />}
       </div>
+      {/* Displaying users array */}
     </>
   );
 

@@ -16,12 +16,12 @@ export default function Modal({ children, setShowModal }) {
           <RxCross2 size={20} />
         </button>
         {children}
-        <button
+        {/* <button
           onClick={clickHandler}
           className='absolute bottom-3 right-8 p-3 bg-gray-200 rounded-2xl hover:bg-gray-300 transition-all duration-300'
         >
           Close
-        </button>
+        </button> */}
       </div>
     </>
   );
