@@ -10,7 +10,7 @@ export default function SideDrawer() {
   const { sideDrawerActive, setSideDrawerActive } = useContextProvider();
   const [inputValue, setInputValue] = useState("");
   const [userLoading, setUserLoading] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]); //searched users
   const [errMessage, setErrorMessage] = useState("");
 
   useEffect(() => {

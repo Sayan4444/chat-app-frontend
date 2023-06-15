@@ -10,6 +10,7 @@ export async function GET(req) {
     const getAllChats = await Chat
         .find({ users: loggedInUserId })
         .populate('users')
+        // .populate('groupAdmin')
         .sort({ updatedAt: -1 })
     if (!getAllChats) {
         return NextResponse.json({ success: 'false', error: 'No users found' }, { status: 404 })

@@ -5,11 +5,12 @@ import MyChat from "./MyChat/MyChat";
 import Navbar from "./Navbar/Navbar";
 import { useContextProvider } from "./Context/Store";
 import ProfileModal from "./ProfileModal/ProfileModal";
+import Loading from "./components/Loading";
 
 export default function Home() {
-  const { showProfileModal, showSelectedUserProfileModal } =
+  const { userData, showProfileModal, showSelectedUserProfileModal } =
     useContextProvider();
-
+  if (Object.keys(userData).length === 0) return <Loading />;
   return (
     <>
       <SideDrawer />

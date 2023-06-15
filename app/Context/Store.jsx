@@ -5,10 +5,11 @@ export const Context = createContext();
 export const useContextProvider = () => useContext(Context);
 
 export default function Store({ children }) {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({}); //signedIn user data
   const [selectedUserData, setSelectedUserData] = useState({}); //user details selected by finding in search bar / My Chats
-  const [selectedUserChat, setSelectedUserChat] = useState({});
+  const [selectedChatIndex, setSelectedChatIndex] = useState(-1); //selected chat in MyChat
   const [showProfileModal, setShowProfileModal] = useState(false); //Bell Button
+  const [chats, setChats] = useState([]); //all the chats of the loggedin user MyChat
   const [showSelectedUserProfileModal, setShowSelectedUserProfileModal] =
     useState(false); //Eye Button
   const [sideDrawerActive, setSideDrawerActive] = useState(false); //Side Drawer
@@ -26,14 +27,18 @@ export default function Store({ children }) {
     setUserData,
     selectedUserData,
     setSelectedUserData,
-    selectedUserChat,
-    setSelectedUserChat,
+    // selectedUserChat,
+    // setSelectedUserChat,
     showProfileModal,
     setShowProfileModal,
     showSelectedUserProfileModal,
     setShowSelectedUserProfileModal,
     sideDrawerActive,
     setSideDrawerActive,
+    chats,
+    setChats,
+    selectedChatIndex,
+    setSelectedChatIndex,
   };
   return <Context.Provider value={obj}>{children}</Context.Provider>;
 }
