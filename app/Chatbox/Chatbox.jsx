@@ -5,16 +5,25 @@ import NoSelectedChat from "./NoSelectedChat";
 import SelectedChat from "./SelectedChat";
 
 export default function Chatbox() {
-  const { selectedUserData, setShowSelectedUserProfileModal } =
-    useContextProvider();
+  const {
+    chatBoxInfo,
+    setShowSelectedUserProfileModal,
+    setShowUpdateGroupChatModal,
+  } = useContextProvider();
+  const type = chatBoxInfo.isGroupChat ? "group" : "user";
   return (
     <div className='bg-white mb-20 mt-4 py-4 w-full rounded-xl relative'>
-      {Object.keys(selectedUserData).length === 0 ? (
+      {Object.keys(chatBoxInfo).length === 0 ? (
         <NoSelectedChat />
       ) : (
         <SelectedChat
-          selectedUserData={selectedUserData}
-          setShowSelectedUserProfileModal={setShowSelectedUserProfileModal}
+          type={type}
+          chatBoxInfo={chatBoxInfo}
+          setShowModal={
+            type === "group"
+              ? setShowUpdateGroupChatModal
+              : setShowSelectedUserProfileModal
+          }
         />
       )}
     </div>

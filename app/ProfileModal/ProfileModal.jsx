@@ -6,7 +6,7 @@ import { useContextProvider } from "../Context/Store";
 export default function ProfileModal({ type }) {
   const {
     userData,
-    selectedUserData,
+    chatBoxInfo,
     setShowProfileModal = null,
     setShowSelectedUserProfileModal = null,
   } = useContextProvider();
@@ -16,7 +16,7 @@ export default function ProfileModal({ type }) {
     data = userData;
     setShowModal = setShowProfileModal;
   } else {
-    data = selectedUserData;
+    data = chatBoxInfo;
     setShowModal = setShowSelectedUserProfileModal;
   }
 

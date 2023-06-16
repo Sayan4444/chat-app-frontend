@@ -1,18 +1,15 @@
 import { AiFillEye } from "react-icons/ai";
 
-export default function SelectedChat({
-  selectedUserData,
-  setShowSelectedUserProfileModal,
-}) {
-  const { name } = selectedUserData;
-  const firstName = name.split(" ")[0];
+export default function SelectedChat({ type, chatBoxInfo, setShowModal }) {
+  const title = getTitle();
+
   return (
     <>
       <div className='flex justify-between w-full px-6'>
-        <div className='text-2xl'>{firstName}</div>
+        <div className='text-2xl'>{title}</div>
         <button
           className='hover:bg-gray-200 hoverEffect hover:scale-x-125 rounded-[50%] px-3 py-3'
-          onClick={() => setShowSelectedUserProfileModal(true)}
+          onClick={() => setShowModal(true)}
         >
           <AiFillEye />
         </button>
@@ -26,4 +23,12 @@ export default function SelectedChat({
       </div>
     </>
   );
+  function getTitle() {
+    if (type === "user") {
+      const { name } = chatBoxInfo;
+      const firstName = name.split(" ")[0];
+      return firstName;
+    }
+    return chatBoxInfo.chatName;
+  }
 }

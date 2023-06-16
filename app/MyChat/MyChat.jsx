@@ -13,7 +13,7 @@ export default function ChatUsers() {
     setChats,
     selectedChatIndex,
     setSelectedChatIndex,
-    setSelectedUserData,
+    setChatBoxInfo,
     setShowCreateGroupChatModal,
   } = useContextProvider();
   const [loading, setLoading] = useState(false);
@@ -28,11 +28,12 @@ export default function ChatUsers() {
     if (selectedChatIndex === -1) return;
     const loggedinId = userData._id;
     const chat = chats[selectedChatIndex];
-    if (chat.isGroupChat === true) return;
+    if (chat.isGroupChat === true) return setChatBoxInfo(chat);
+
     const { users } = chat;
-    if (users[0]._id !== loggedinId) return setSelectedUserData(users[0]);
-    return setSelectedUserData(users[1]);
-  }, [selectedChatIndex]);
+    if (users[0]._id !== loggedinId) return setChatBoxInfo(users[0]);
+    return setChatBoxInfo(users[1]);
+  }, [selectedChatIndex, chats]);
 
   return (
     <>

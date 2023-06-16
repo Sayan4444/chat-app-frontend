@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../../components/Spinner";
 import { useRouter } from "next/navigation";
 import { useContextProvider } from "@/app/Context/Store";
+import { toastError } from "@/app/utils/toast";
 
 export default function Signin() {
   const { setUserData } = useContextProvider();
@@ -117,16 +118,7 @@ export default function Signin() {
       setUserData(resData.user);
       router.push("/");
     } catch (error) {
-      toast.error(error.message, {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
+      toastError(error.message);
     }
     setloading(false);
     return;

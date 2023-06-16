@@ -6,15 +6,19 @@ export const useContextProvider = () => useContext(Context);
 
 export default function Store({ children }) {
   const [userData, setUserData] = useState({}); //signedIn user data
-  const [selectedUserData, setSelectedUserData] = useState({}); //user details selected by finding in search bar / My Chats
+  const [chatBoxInfo, setChatBoxInfo] = useState({}); //information to show on chatbox selected via MyChat/SideDrawer/contains chats
   const [selectedChatIndex, setSelectedChatIndex] = useState(-1); //selected chat in MyChat
   const [chats, setChats] = useState([]); //all the chats of the loggedin user MyChat
 
   const [showSelectedUserProfileModal, setShowSelectedUserProfileModal] =
     useState(false); //Eye Button
+
   const [showProfileModal, setShowProfileModal] = useState(false); //Bell Button
   const [showCreateGroupChatModal, setShowCreateGroupChatModal] =
-    useState(false); //Bell Button
+    useState(false); //MyChat
+  const [showUpdateGroupChatModal, setShowUpdateGroupChatModal] =
+    useState(false); //Eye
+
   const [sideDrawerActive, setSideDrawerActive] = useState(false); //Side Drawer
 
   useEffect(() => {
@@ -28,8 +32,8 @@ export default function Store({ children }) {
   const obj = {
     userData,
     setUserData,
-    selectedUserData,
-    setSelectedUserData,
+    chatBoxInfo,
+    setChatBoxInfo,
     showProfileModal,
     setShowProfileModal,
     showSelectedUserProfileModal,
@@ -42,6 +46,8 @@ export default function Store({ children }) {
     setSelectedChatIndex,
     showCreateGroupChatModal,
     setShowCreateGroupChatModal,
+    showUpdateGroupChatModal,
+    setShowUpdateGroupChatModal,
   };
   return <Context.Provider value={obj}>{children}</Context.Provider>;
 }

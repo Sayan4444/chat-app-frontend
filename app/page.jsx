@@ -9,6 +9,7 @@ import Loading from "./components/Loading";
 import CreateGroupModal from "./CreateGroupModal/CreateGroupModal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UpdateGroupModal from "./UpdateGroupModal/UpdateGroupModal";
 
 export default function Home() {
   const {
@@ -17,6 +18,8 @@ export default function Home() {
     showSelectedUserProfileModal,
     showCreateGroupChatModal,
     setShowCreateGroupChatModal,
+    showUpdateGroupChatModal,
+    setShowUpdateGroupChatModal,
   } = useContextProvider();
   if (Object.keys(userData).length === 0) return <Loading />;
   return (
@@ -32,6 +35,11 @@ export default function Home() {
       {showCreateGroupChatModal && (
         <CreateGroupModal
           setShowCreateGroupChatModal={setShowCreateGroupChatModal}
+        />
+      )}
+      {showUpdateGroupChatModal && (
+        <UpdateGroupModal
+          setShowUpdateGroupChatModal={setShowUpdateGroupChatModal}
         />
       )}
       <ToastContainer />

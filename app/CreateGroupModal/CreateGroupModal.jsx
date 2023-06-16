@@ -5,9 +5,9 @@ import searchUser from "../utils/searchUser";
 import SearchedUser from "./SearchedUser";
 import Loading from "./Loading";
 import SelectedUsers from "./SelectedUsers";
-import { toast } from "react-toastify";
 import { useContextProvider } from "../Context/Store";
 import Spinner from "../components/Spinner";
+import { toastError, toastSuccess } from "../utils/toast";
 
 export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
   const { setChats, setSelectedChatIndex } = useContextProvider();
@@ -94,16 +94,7 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
     else if (selectedUsers.length <= 1)
       setErrorMessage = "Select minimum 3 users";
     if (setErrorMessage) {
-      toast.error(setErrorMessage, {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
+      toastError(setErrorMessage);
     }
     setCreateChatLoader(true);
     const res = await fetch("/api/chat/group", {
@@ -114,16 +105,7 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
     const { chat } = resData;
     setChats((prev) => [chat, ...prev]);
     setSelectedChatIndex(0);
-    toast.success("Group Chat Created", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-    });
+    toastSuccess("Group Chat Created");
     setCreateChatLoader(false);
     setShowCreateGroupChatModal(false);
   }
