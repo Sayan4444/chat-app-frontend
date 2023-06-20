@@ -23,7 +23,8 @@ export async function middleware(req) {
         }
     }
 
-    else if (req.nextUrl.pathname.startsWith('/api/chat')) {
+    else if (req.nextUrl.pathname.startsWith('/api/chat') ||
+        req.nextUrl.pathname.startsWith('/api/message')) {
         const resData = await protect(token);
         if (resData.success === 'true') return NextResponse.next();
         const { success, error, status } = resData;

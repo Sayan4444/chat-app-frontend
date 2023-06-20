@@ -1,4 +1,5 @@
-export default function Chat({ selected, chat, loggedinId }) {
+"use client";
+export default function Chat({ selected, loggedinId, chat }) {
   const chatName = getChatName();
   return (
     <>

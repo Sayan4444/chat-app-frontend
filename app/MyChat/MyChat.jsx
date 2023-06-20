@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import Chat from "./Chat";
 import { useContextProvider } from "../Context/Store";
 import Loading from "./Loading";
+import Chat from "./Chat";
 
 export default function ChatUsers() {
   const {
@@ -25,6 +25,7 @@ export default function ChatUsers() {
   }, []);
 
   useEffect(() => {
+    console.log(chats);
     if (selectedChatIndex === -1) return;
     const loggedinId = userData._id;
     const chat = chats[selectedChatIndex];
@@ -76,6 +77,7 @@ export default function ChatUsers() {
     const res = await fetch("/api/chat", { cache: "no-cache" });
     const resData = await res.json();
     const { chats } = resData;
+    console.log(chats);
     setChats(chats);
     setLoading(false);
   }

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useContextProvider } from "@/app/Context/Store";
 import { toastError } from "@/app/utils/toast";
 
-const Signup = () => {
+export default function Signup() {
   const { setUserData } = useContextProvider();
   const router = useRouter();
   const [loading, setloading] = useState(false);
@@ -165,6 +165,5 @@ const Signup = () => {
       <ToastContainer />
     </>
   );
-};
+}
 // TODO: remove all console.log
-export default Signup;

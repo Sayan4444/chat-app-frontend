@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import GroupUser from "./GroupUser";
 import { useContextProvider } from "../Context/Store";
-import Spinner from "../components/Spinner";
 import { toastError, toastSuccess } from "../utils/toast";
 import searchUser from "../utils/searchUser";
 import SearchedUser from "./SearchedUser";
@@ -13,8 +12,7 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
     useContextProvider();
   const [groupName, setGroupName] = useState("");
   const [userName, setUserName] = useState("");
-  const [updateLoader, setUpdateLoader] = useState(false);
-  const [userLoading, setUserLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(false);
   const [searchedUsers, setSearchedUsers] = useState([]); //searched users
   const { users } = chatBoxInfo;
 
@@ -54,8 +52,7 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
               onClick={renameGroup}
               className='p-3 bg-teal-600 rounded-xl hover:bg-teal-700 hoverEffect text-white text-lg w-32'
             >
-              {!updateLoader && "Update"}
-              {updateLoader && <Spinner color='text-white fill-black' />}
+              Update
             </button>
           </div>
           <input
@@ -108,7 +105,12 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
     if (groupName.trim().length === 0) {
       return toastError("Enter Group Name");
     }
-    setUpdateLoader(true);
+    chatBoxInfo.chatName = groupName;
+    chats[selectedChatIndex] = chatBoxInfo;
+    setChats(chats.slice());
+    setShowUpdateGroupChatModal(false);
+    toastSuccess("Group Name Changed");
+    // setUpdateLoader(true);
     await fetch("/api/chat/groupRename", {
       method: "PUT",
       body: JSON.stringify({
@@ -116,13 +118,5 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
         newChatName: groupName,
       }),
     });
-    setUpdateLoader(false);
-    // setChatBoxInfo((prev) => (prev.chatName = groupName));
-    toastSuccess("Group Name Changed");
-
-    // Updating UI
-    chatBoxInfo.chatName = groupName;
-    chats[selectedChatIndex] = chatBoxInfo;
-    setChats(chats.slice());
   }
 }

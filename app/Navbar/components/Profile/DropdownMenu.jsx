@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 
 export default function DropdownMenu({ setShowdropDown }) {
   const router = useRouter();
-  const { setUserData, setShowProfileModal } = useContextProvider();
+  const { setUserData, setShowProfileModal, setShowUpdateUserSettingsModal } =
+    useContextProvider();
+  const buttonStyles =
+    "hover:bg-gray-200 transition-all duration-300 text-left py-3 pl-2";
   return (
     <>
       <div
@@ -18,14 +21,20 @@ export default function DropdownMenu({ setShowdropDown }) {
             setShowProfileModal(true);
             setShowdropDown(false);
           }}
-          className='hover:bg-gray-200 transition-all duration-300 text-left py-3 pl-2'
+          className={buttonStyles}
         >
           <span>My Profile</span>
         </button>
         <button
-          onClick={logoutHandler}
-          className='hover:bg-gray-200 transition-all duration-300 text-left py-3 pl-2'
+          onClick={() => {
+            setShowUpdateUserSettingsModal(true);
+            setShowdropDown(false);
+          }}
+          className={buttonStyles}
         >
+          <span>My Settings</span>
+        </button>
+        <button onClick={logoutHandler} className={buttonStyles}>
           <span>Logout</span>
         </button>
       </div>

@@ -1,7 +1,7 @@
 import dbConnect from "@/dbConnect/dbConnect";
 import User from "@/model/User";
 import { NextResponse } from "next/server";
-import sendTokenResponse from "../util/sendTokenResponse";
+import sendTokenResponse from "../../utils/sendTokenResponse";
 
 export async function POST(req) {
     try {
