@@ -10,7 +10,7 @@ export default async function () {
         await mongoose.connect(DB)
         // console.log("connected to mongoDB server");
     } catch (error) {
-        // console.log(err.message);
-        // console.log("not connected to mongo server")
+        console.log(error.message);
+        console.log("not connected to mongo server")
     }
 }

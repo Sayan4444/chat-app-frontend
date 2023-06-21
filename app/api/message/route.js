@@ -5,22 +5,6 @@ import loggedInUserDetails from "../utils/loggedInUserDetails";
 import mongoose from "mongoose";
 import Chat from "@/model/Chat";
 
-export async function GET(req) {
-    await dbConnect();
-    //get the chats of signed in user
-    const user = await loggedInUserDetails(req);
-    const loggedInUserId = user._id;
-    const getAllChats = await Chat
-        .find({ users: loggedInUserId })
-        .select('_id')
-
-    //then collect the messages of its related chats
-    const messages = await Message.find({ chat: { $in: getAllChats } });
-    //return them
-
-    return NextResponse.json({ success: 'true', messages })
-}
-
 export async function POST(req) {
     const { content, chatId } = await req.json();
     await dbConnect();

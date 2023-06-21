@@ -15,6 +15,7 @@ export default function ChatUsers() {
     setSelectedChatIndex,
     setChatBoxInfo,
     setShowCreateGroupChatModal,
+    setSelectedMessages,
   } = useContextProvider();
   const [loading, setLoading] = useState(false);
 
@@ -25,15 +26,11 @@ export default function ChatUsers() {
   }, []);
 
   useEffect(() => {
-    console.log(chats);
     if (selectedChatIndex === -1) return;
-    const loggedinId = userData._id;
     const chat = chats[selectedChatIndex];
-    if (chat.isGroupChat === true) return setChatBoxInfo(chat);
-
-    const { users } = chat;
-    if (users[0]._id !== loggedinId) return setChatBoxInfo(users[0]);
-    return setChatBoxInfo(users[1]);
+    setChatBoxInfo(chat);
+    (async () => await getMessages(chat._id))();
+    // getMessages(chat._id);
   }, [selectedChatIndex, chats]);
 
   return (
@@ -72,12 +69,21 @@ export default function ChatUsers() {
     </>
   );
 
+  async function getMessages(chatId) {
+    console.log(chatId);
+    const res = await fetch(`/api/message/${chatId}`, { cache: "no-cache" });
+    const resData = await res.json();
+    if (resData.success === "false") return;
+    const { messages } = resData;
+    // console.log(resData);
+    setSelectedMessages(messages);
+  }
+
   async function getChats() {
     setLoading(true);
     const res = await fetch("/api/chat", { cache: "no-cache" });
     const resData = await res.json();
     const { chats } = resData;
-    console.log(chats);
     setChats(chats);
     setLoading(false);
   }

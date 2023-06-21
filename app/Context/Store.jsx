@@ -6,7 +6,7 @@ export const useContextProvider = () => useContext(Context);
 
 export default function Store({ children }) {
   const [userData, setUserData] = useState({}); //signedIn user data
-  const [messages, setMessages] = useState([]);
+  const [selectedMessages, setSelectedMessages] = useState([]);
   const [chatBoxInfo, setChatBoxInfo] = useState({}); //information to show on chatbox selected via MyChat/SideDrawer/contains chats
   const [selectedChatIndex, setSelectedChatIndex] = useState(-1); //selected chat in MyChat
   const [chats, setChats] = useState([]); //all the chats of the loggedin user MyChat
@@ -26,13 +26,8 @@ export default function Store({ children }) {
 
   useEffect(() => {
     (async () => {
-      const [userData, messages] = await Promise.all([
-        getUserData(),
-        getMessages(),
-      ]);
-      // const userData = await getUserData();
+      const userData = await getUserData();
       setUserData(userData.user);
-      setMessages(messages.messages);
     })();
   }, []);
 
@@ -55,8 +50,8 @@ export default function Store({ children }) {
     setShowCreateGroupChatModal,
     showUpdateGroupChatModal,
     setShowUpdateGroupChatModal,
-    messages,
-    setMessages,
+    selectedMessages,
+    setSelectedMessages,
     showUpdateUserSettingsModal,
     setShowUpdateUserSettingsModal,
   };
@@ -69,12 +64,4 @@ async function getUserData() {
   });
   const userData = await res.json();
   return userData;
-}
-
-async function getMessages() {
-  const res = await fetch("/api/message", {
-    cache: "no-cache",
-  });
-  const messages = await res.json();
-  return messages;
 }

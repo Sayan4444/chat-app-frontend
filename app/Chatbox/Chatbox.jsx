@@ -6,6 +6,7 @@ import SelectedChat from "./SelectedChat";
 
 export default function Chatbox() {
   const {
+    userData,
     chatBoxInfo,
     setShowSelectedUserProfileModal,
     setShowUpdateGroupChatModal,
@@ -17,6 +18,7 @@ export default function Chatbox() {
         <NoSelectedChat />
       ) : (
         <SelectedChat
+          loggedInId={userData._id}
           type={type}
           chatBoxInfo={chatBoxInfo}
           setShowModal={
