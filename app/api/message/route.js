@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import Chat from "@/model/Chat";
 
 export async function POST(req) {
+
     const { content, chatId } = await req.json();
     await dbConnect();
     const user = await loggedInUserDetails(req);
@@ -24,8 +25,6 @@ export async function POST(req) {
         }, {
             new: true
         })
-        await message.populate('sender')
-        await message.populate('chat')
         return NextResponse.json(
             { success: 'true', message }, { status: 201 })
     } catch (error) {

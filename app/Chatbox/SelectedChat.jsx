@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import ShowMessages from "./ShowMessages";
+import { useContextProvider } from "../Context/Store";
 
 export default function SelectedChat({
   type,
@@ -8,6 +9,7 @@ export default function SelectedChat({
   setShowModal,
   loggedInId,
 }) {
+  const { selectedMessages, setSelectedMessages } = useContextProvider();
   const [message, setMessage] = useState("");
   const title = getTitle();
 
@@ -22,14 +24,21 @@ export default function SelectedChat({
           <AiFillEye />
         </button>
       </div>
-      <div className='bg-gray-200 my-3 h-[93%] rounded-xl mx-2 relative'>
-        <ShowMessages />
+      <div className='bg-gray-200 mx-2 my-3 h-[85%] rounded-xl overflow-y-auto scrollbar-hide'>
+        {selectedMessages.length !== 0 && (
+          <ShowMessages
+            loggedInId={loggedInId}
+            selectedMessages={selectedMessages}
+          />
+        )}
+      </div>
+      <div className=' mx-2 my-3'>
         <input
           type='text'
           placeholder='Enter message'
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className='absolute bottom-0 bg-gray-300 rounded-xl w-full pl-4 py-3 focus:outline-none focus:border-2 focus:border-blue-500'
+          className='bg-gray-300 rounded-xl w-full pl-4 py-3 focus:outline-none focus:border-2 focus:border-blue-500 '
           onKeyDown={sendMessage}
         />
       </div>
@@ -46,6 +55,7 @@ export default function SelectedChat({
       }),
     });
     const resData = await res.json();
+    setSelectedMessages([...selectedMessages, resData.message]);
   }
 
   function getTitle() {

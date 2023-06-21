@@ -29,7 +29,7 @@ export default function ChatUsers() {
     if (selectedChatIndex === -1) return;
     const chat = chats[selectedChatIndex];
     setChatBoxInfo(chat);
-    (async () => await getMessages(chat._id))();
+    getMessages(chat._id);
     // getMessages(chat._id);
   }, [selectedChatIndex, chats]);
 
@@ -70,12 +70,10 @@ export default function ChatUsers() {
   );
 
   async function getMessages(chatId) {
-    console.log(chatId);
     const res = await fetch(`/api/message/${chatId}`, { cache: "no-cache" });
     const resData = await res.json();
     if (resData.success === "false") return;
     const { messages } = resData;
-    // console.log(resData);
     setSelectedMessages(messages);
   }
 

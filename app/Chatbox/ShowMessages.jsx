@@ -1,13 +1,17 @@
-import { useContextProvider } from "../Context/Store";
+import LoggedInUser from "./Message UI/LoggedInUser";
+import OtherUser from "./Message UI/OtherUser";
 
-export default function ShowMessages() {
-  const { selectedMessages } = useContextProvider();
-  console.log(selectedMessages);
+export default function ShowMessages({ loggedInId, selectedMessages }) {
   return (
     <>
-      <div className='flex flex-col space-y-2'>
-        {selectedMessages.length !== 0 &&
-          selectedMessages.map((msg) => <div>{msg}</div>)}
+      <div className='flex flex-col space-y-2 mx-10 py-3'>
+        {selectedMessages.map((msg) =>
+          msg.sender === loggedInId ? (
+            <LoggedInUser key={msg._id} message={msg.content} />
+          ) : (
+            <OtherUser key={msg._id} message={msg.content} />
+          )
+        )}
       </div>
     </>
   );

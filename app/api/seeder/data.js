@@ -66,32 +66,32 @@ export const messageData = async () => {
     })
     return [
         {
-            "sender": guestUserId,
+            "sender": sayanUserId,
             "content": "toGuest1",
             "chat": sayanGuestChatId
         },
         {
-            "sender": guestUserId,
+            "sender": sayanUserId,
             "content": "toGuest2",
             "chat": sayanGuestChatId
         },
         {
-            "sender": guestUserId,
+            "sender": sayanUserId,
             "content": "toGuest3",
             "chat": sayanGuestChatId
         },
         {
-            "sender": sayanUserId,
+            "sender": guestUserId,
             "content": "toSayan1",
             "chat": sayanGuestChatId
         },
         {
-            "sender": sayanUserId,
+            "sender": guestUserId,
             "content": "toSayan2",
             "chat": sayanGuestChatId
         },
         {
-            "sender": sayanUserId,
+            "sender": guestUserId,
             "content": "toSayan3",
             "chat": sayanGuestChatId
         },
