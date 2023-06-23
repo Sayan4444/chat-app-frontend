@@ -26,6 +26,7 @@ export default function ChatUsers() {
   }, []);
 
   useEffect(() => {
+    console.log(selectedChatIndex);
     if (selectedChatIndex === -1) return;
     const chat = chats[selectedChatIndex];
     setChatBoxInfo(chat);

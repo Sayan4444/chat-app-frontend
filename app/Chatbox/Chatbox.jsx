@@ -18,7 +18,7 @@ export default function Chatbox() {
         <NoSelectedChat />
       ) : (
         <SelectedChat
-          loggedInId={userData._id}
+          userData={userData}
           type={type}
           chatBoxInfo={chatBoxInfo}
           setShowModal={
