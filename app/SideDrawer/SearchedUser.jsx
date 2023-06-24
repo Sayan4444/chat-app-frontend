@@ -2,8 +2,13 @@ import Image from "next/image";
 import { useContextProvider } from "../Context/Store";
 
 export default function SearchedUser({ user }) {
-  const { setSideDrawerActive, chats, setChats, setSelectedChatIndex } =
-    useContextProvider();
+  const {
+    setSideDrawerActive,
+    chats,
+    setChats,
+    setSelectedChatIndex,
+    setMyChatsLoader,
+  } = useContextProvider();
   const { name, picture, _id } = user;
   return (
     <>
@@ -42,6 +47,7 @@ export default function SearchedUser({ user }) {
       )
         return setSelectedChatIndex(index);
     }
+    setMyChatsLoader(true);
     //Creating new chat
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -51,5 +57,6 @@ export default function SearchedUser({ user }) {
     const { chat } = resData;
     setChats((prev) => [chat, ...prev]);
     setSelectedChatIndex(0);
+    setMyChatsLoader(false);
   }
 }

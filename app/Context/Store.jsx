@@ -7,6 +7,7 @@ export const useContextProvider = () => useContext(Context);
 export default function Store({ children }) {
   const [userData, setUserData] = useState({}); //signedIn user data
   const [selectedMessages, setSelectedMessages] = useState([]);
+  const [cacheMessages, setCacheMessages] = useState([]);
   const [chatBoxInfo, setChatBoxInfo] = useState({}); //information to show on chatbox selected via MyChat/SideDrawer/contains chats
   const [selectedChatIndex, setSelectedChatIndex] = useState(-1); //selected chat in MyChat
   const [chats, setChats] = useState([]); //all the chats of the loggedin user MyChat
@@ -23,6 +24,9 @@ export default function Store({ children }) {
     useState(false); //Bell Botton
 
   const [sideDrawerActive, setSideDrawerActive] = useState(false); //Side Drawer
+
+  const [myChatsLoader, setMyChatsLoader] = useState(false);
+  const [chatboxLoader, setChatboxLoader] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -54,6 +58,12 @@ export default function Store({ children }) {
     setSelectedMessages,
     showUpdateUserSettingsModal,
     setShowUpdateUserSettingsModal,
+    myChatsLoader,
+    setMyChatsLoader,
+    chatboxLoader,
+    setChatboxLoader,
+    cacheMessages,
+    setCacheMessages,
   };
   return <Context.Provider value={obj}>{children}</Context.Provider>;
 }

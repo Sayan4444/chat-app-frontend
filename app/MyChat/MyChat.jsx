@@ -16,8 +16,12 @@ export default function ChatUsers() {
     setChatBoxInfo,
     setShowCreateGroupChatModal,
     setSelectedMessages,
+    myChatsLoader,
+    setMyChatsLoader,
+    setChatboxLoader,
+    cacheMessages,
+    setCacheMessages,
   } = useContextProvider();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -26,12 +30,10 @@ export default function ChatUsers() {
   }, []);
 
   useEffect(() => {
-    console.log(selectedChatIndex);
     if (selectedChatIndex === -1) return;
     const chat = chats[selectedChatIndex];
     setChatBoxInfo(chat);
     getMessages(chat._id);
-    // getMessages(chat._id);
   }, [selectedChatIndex, chats]);
 
   return (
@@ -50,9 +52,9 @@ export default function ChatUsers() {
           </button>
         </div>
         {/* Loading Chats */}
-        {loading && <Loading />}
+        {myChatsLoader && <Loading />}
         {/* Showing Chats */}
-        {chats.length !== 0 && (
+        {chats.length !== 0 && !myChatsLoader && (
           <div className='flex flex-col space-y-2 mt-7'>
             {chats.map((chat, index) => (
               <div onClick={() => setSelectedChatIndex(index)} key={chat._id}>
@@ -71,19 +73,41 @@ export default function ChatUsers() {
   );
 
   async function getMessages(chatId) {
+    const msgs = cacheMessages.find((msg) => msg[0]?.chat === chatId);
+
+    if (msgs) {
+      setSelectedMessages(msgs);
+      return;
+    }
+    setChatboxLoader(true);
     const res = await fetch(`/api/message/${chatId}`, { cache: "no-cache" });
+    setChatboxLoader(false);
     const resData = await res.json();
     if (resData.success === "false") return;
     const { messages } = resData;
     setSelectedMessages(messages);
+    if (messages.length === 0) {
+      return setCacheMessages([
+        ...cacheMessages,
+        [
+          {
+            sender: {
+              _id: userData._id,
+            },
+            chat: chatId,
+          },
+        ],
+      ]);
+    }
+    setCacheMessages([...cacheMessages, messages]);
   }
 
   async function getChats() {
-    setLoading(true);
+    setMyChatsLoader(true);
     const res = await fetch("/api/chat", { cache: "no-cache" });
     const resData = await res.json();
     const { chats } = resData;
     setChats(chats);
-    setLoading(false);
+    setMyChatsLoader(false);
   }
 }

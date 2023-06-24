@@ -2,6 +2,7 @@ import dbConnect from "@/dbConnect/dbConnect";
 import loggedInUserDetails from "../utils/loggedInUserDetails";
 import { NextResponse } from "next/server";
 import Chat from "@/model/Chat";
+import Message from "@/model/Message";
 
 export async function GET(req) {
     await dbConnect();
@@ -11,6 +12,13 @@ export async function GET(req) {
         .find({ users: loggedInUserId })
         .populate('users')
         .populate('groupAdmin')
+        .populate({
+            path: 'latestMessage',
+            populate: {
+                path: 'sender',
+                model: 'User' // Replace with the actual model name for the User object
+            }
+        })
         .sort({ updatedAt: -1 })
     if (!getAllChats) {
         return NextResponse.json({ success: 'false', error: 'No users found' }, { status: 404 })

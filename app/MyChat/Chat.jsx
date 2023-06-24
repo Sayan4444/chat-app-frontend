@@ -1,5 +1,7 @@
 "use client";
 export default function Chat({ selected, loggedinId, chat }) {
+  const { latestMessage } = chat;
+
   const chatName = getChatName();
   return (
     <>
@@ -9,6 +11,17 @@ export default function Chat({ selected, loggedinId, chat }) {
         }`}
       >
         {chatName}
+        {latestMessage && (
+          <div className='text-sm mt-2'>
+            <span className='font-bold'>
+              {latestMessage.sender._id === loggedinId
+                ? "You"
+                : latestMessage.sender.name}
+            </span>
+            <span className='mx-1'>:</span>
+            <span>{latestMessage.content}</span>
+          </div>
+        )}
       </div>
     </>
   );

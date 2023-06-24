@@ -11,9 +11,20 @@ export default function SelectedChat({
   setShowModal,
   userData,
 }) {
-  const { selectedMessages, setSelectedMessages } = useContextProvider();
+  const {
+    selectedMessages,
+    setSelectedMessages,
+    chats,
+    setChats,
+    selectedChatIndex,
+  } = useContextProvider();
   const [message, setMessage] = useState("");
   const title = getTitle();
+
+  useEffect(() => {
+    const container = document.getElementById("arrayContainer");
+    container.scrollTop = container.scrollHeight;
+  }, [selectedMessages]);
 
   useEffect(() => {
     socket.emit("join_room", chatBoxInfo._id);
@@ -22,6 +33,7 @@ export default function SelectedChat({
   useEffect(() => {
     socket.on("receive_message", (messageObj) => {
       setSelectedMessages([...selectedMessages, messageObj]);
+      chats[selectedChatIndex].latestMessage = messageObj;
     });
 
     return () => {
@@ -40,7 +52,10 @@ export default function SelectedChat({
           <AiFillEye />
         </button>
       </div>
-      <div className='bg-gray-200 mx-2 my-3 h-[82%] rounded-xl overflow-y-auto scrollbar-hide'>
+      <div
+        className='bg-gray-200 mx-2 my-3 h-[80%] desktop:h-[85%] rounded-xl overflow-y-auto scrollbar-hide'
+        id='arrayContainer'
+      >
         {selectedMessages.length !== 0 && (
           <ShowMessages
             loggedInId={userData._id}
@@ -72,6 +87,7 @@ export default function SelectedChat({
       chatId: chatBoxInfo._id,
     };
     socket.emit("send_message", messageObj);
+    chats[selectedChatIndex].latestMessage = messageObj;
     setSelectedMessages([...selectedMessages, messageObj]);
     const res = await fetch("/api/message", {
       method: "POST",
@@ -81,8 +97,6 @@ export default function SelectedChat({
       }),
     });
     setMessage("");
-    // const resData = await res.json();
-    // setSelectedMessages([...selectedMessages, resData.message]);
   }
 
   function getTitle() {
