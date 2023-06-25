@@ -15,8 +15,9 @@ export default function SelectedChat({
     selectedMessages,
     setSelectedMessages,
     chats,
-    setChats,
     selectedChatIndex,
+    cacheMessages,
+    setCacheMessages,
   } = useContextProvider();
   const [message, setMessage] = useState("");
   const title = getTitle();
@@ -32,8 +33,7 @@ export default function SelectedChat({
 
   useEffect(() => {
     socket.on("receive_message", (messageObj) => {
-      setSelectedMessages([...selectedMessages, messageObj]);
-      chats[selectedChatIndex].latestMessage = messageObj;
+      handleMsgsUi("receive", messageObj);
     });
 
     return () => {
@@ -79,6 +79,33 @@ export default function SelectedChat({
     </>
   );
 
+  function handleMsgsUi(type, messageObj) {
+    setSelectedMessages((prev) => [...prev, messageObj]);
+    // const { chatId } = messageObj;
+    // const index = cacheMessages.findIndex((msg) => msg[0]?.chat === chatId);
+
+    // if (index === -1) {
+    //   return setCacheMessages((prev) => [...prev, [messageObj]]);
+    // }
+    // // console.log({ type, index });
+    // cacheMessages[index] = newMsg;
+    // setCacheMessages([...cacheMessages]);
+    setCacheMessages((prevCacheMessages) => {
+      const { chatId } = messageObj;
+      const index = prevCacheMessages.findIndex(
+        (msg) => msg[0]?.chat === chatId
+      );
+
+      if (index === -1) {
+        return [...prevCacheMessages, [messageObj]];
+      }
+
+      const updatedCacheMessages = [...prevCacheMessages];
+      updatedCacheMessages[index] = [...prevCacheMessages[index], messageObj];
+      return updatedCacheMessages;
+    });
+  }
+
   async function sendMessage() {
     const messageObj = {
       _id: Math.random() * Math.pow(10, 16),
@@ -87,16 +114,15 @@ export default function SelectedChat({
       chatId: chatBoxInfo._id,
     };
     socket.emit("send_message", messageObj);
-    chats[selectedChatIndex].latestMessage = messageObj;
-    setSelectedMessages([...selectedMessages, messageObj]);
-    const res = await fetch("/api/message", {
+    handleMsgsUi("send", messageObj);
+    setMessage("");
+    await fetch("/api/message", {
       method: "POST",
       body: JSON.stringify({
         content: message,
         chatId: chatBoxInfo._id,
       }),
     });
-    setMessage("");
   }
 
   function getTitle() {
@@ -111,3 +137,14 @@ export default function SelectedChat({
     return chatBoxInfo.chatName;
   }
 }
+
+// let index;
+// for (let i = 0; i < cacheMessages.length; i++) {
+//   const msg = cacheMessages[i];
+//   console.log(msg[0].chat, chatId);
+//   if (msg[0].chat === chatId) {
+//     index = i;
+//     break;
+//   }
+// }
+//1st message
