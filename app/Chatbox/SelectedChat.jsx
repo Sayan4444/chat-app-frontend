@@ -80,9 +80,17 @@ export default function SelectedChat({
   );
 
   function handleMsgsUi(messageObj) {
-    chats[selectedChatIndex].latestMessage = messageObj;
-    setChats([...chats]);
+    //update latest message in chats
+    setChats((prev) => {
+      const chatIndex = chats.findIndex(
+        (chat) => chat._id === messageObj.chatId
+      );
+      prev[chatIndex].latestMessage = messageObj;
+      return [...prev];
+    });
+    //update UI in chatBox
     setSelectedMessages((prev) => [...prev, messageObj]);
+    //update cached message
     setCacheMessages((prevCacheMessages) => {
       const { chatId } = messageObj;
       const index = prevCacheMessages.findIndex(
