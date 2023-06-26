@@ -15,8 +15,8 @@ export default function SelectedChat({
     selectedMessages,
     setSelectedMessages,
     chats,
+    setChats,
     selectedChatIndex,
-    cacheMessages,
     setCacheMessages,
   } = useContextProvider();
   const [message, setMessage] = useState("");
@@ -33,7 +33,7 @@ export default function SelectedChat({
 
   useEffect(() => {
     socket.on("receive_message", (messageObj) => {
-      handleMsgsUi("receive", messageObj);
+      handleMsgsUi(messageObj);
     });
 
     return () => {
@@ -79,17 +79,10 @@ export default function SelectedChat({
     </>
   );
 
-  function handleMsgsUi(type, messageObj) {
+  function handleMsgsUi(messageObj) {
+    chats[selectedChatIndex].latestMessage = messageObj;
+    setChats([...chats]);
     setSelectedMessages((prev) => [...prev, messageObj]);
-    // const { chatId } = messageObj;
-    // const index = cacheMessages.findIndex((msg) => msg[0]?.chat === chatId);
-
-    // if (index === -1) {
-    //   return setCacheMessages((prev) => [...prev, [messageObj]]);
-    // }
-    // // console.log({ type, index });
-    // cacheMessages[index] = newMsg;
-    // setCacheMessages([...cacheMessages]);
     setCacheMessages((prevCacheMessages) => {
       const { chatId } = messageObj;
       const index = prevCacheMessages.findIndex(
@@ -114,7 +107,7 @@ export default function SelectedChat({
       chatId: chatBoxInfo._id,
     };
     socket.emit("send_message", messageObj);
-    handleMsgsUi("send", messageObj);
+    handleMsgsUi(messageObj);
     setMessage("");
     await fetch("/api/message", {
       method: "POST",

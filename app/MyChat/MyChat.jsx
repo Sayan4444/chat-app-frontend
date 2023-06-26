@@ -75,7 +75,6 @@ export default function ChatUsers() {
   async function getMessages(chatId) {
     const msgs = cacheMessages.find((msg) => msg[0]?.chat === chatId);
     if (msgs) {
-      console.log("hit");
       if (!msgs[0]._id) return setSelectedMessages([]);
       return setSelectedMessages(msgs);
     }
@@ -85,7 +84,6 @@ export default function ChatUsers() {
     const resData = await res.json();
     if (resData.success === "false") return;
     const { messages } = resData;
-    console.log("hit");
     setSelectedMessages(messages);
     if (messages.length === 0) {
       return setCacheMessages((prev) => [...prev, [{ chat: chatId }]]);
@@ -98,19 +96,6 @@ export default function ChatUsers() {
     const res = await fetch("/api/chat", { cache: "no-cache" });
     const resData = await res.json();
     const { chats } = resData;
-    // chats.forEach((chat) => {
-    //   setCacheMessages((prev) => [
-    //     ...prev,
-    //     [
-    //       {
-    //         sender: {
-    //           _id: userData._id,
-    //         },
-    //         chat: chat._id,
-    //       },
-    //     ],
-    //   ]);
-    // });
     setChats(chats);
     setMyChatsLoader(false);
   }

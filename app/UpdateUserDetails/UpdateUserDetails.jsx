@@ -3,6 +3,7 @@ import Modal from "../components/Modal";
 import { useContextProvider } from "../Context/Store";
 import Spinner from "../components/Spinner";
 import { toastError, toastSuccess } from "../utils/toast";
+import handlePictureChange from "../utils/handlePictureChange";
 
 export default function UpdateUserDetails({ setShowUpdateUserSettingsModal }) {
   const { userData, setUserData } = useContextProvider();
@@ -13,6 +14,7 @@ export default function UpdateUserDetails({ setShowUpdateUserSettingsModal }) {
     newPassword: "",
   });
   const [typePass, setTypePass] = useState(true);
+  const [pictureUploadLoader, setPictureUploadLoader] = useState(false);
 
   const inputClassName =
     "focus:outline-none border-2 border-gray-200 px-4 py-2 mt-2 focus:border-blue-500 rounded-xl w-full";
@@ -77,12 +79,27 @@ export default function UpdateUserDetails({ setShowUpdateUserSettingsModal }) {
           onChange={changeHandler}
         />
         <div className={titleClassName}>Upload Picture</div>
-        <input
-          type='file'
-          name='picture'
-          accept='image/*'
-          onChange={handlePictureChange}
-        />
+        <div className='relative'>
+          <input
+            type='file'
+            name='picture'
+            accept='image/*'
+            onChange={(e) =>
+              handlePictureChange(
+                e,
+                setPictureUploadLoader,
+                formData.picture,
+                setFormData
+              )
+            }
+          />
+          {pictureUploadLoader && (
+            <span className='absolute right-60'>
+              <Spinner />
+            </span>
+          )}
+        </div>
+
         {loading && (
           <button
             className='bg-blue-300 w-full rounded-xl text-center py-3 text-white mt-6 hover:cursor-not-allowed'
@@ -136,20 +153,5 @@ export default function UpdateUserDetails({ setShowUpdateUserSettingsModal }) {
       [e.target.name]: e.target.value,
     }));
     if (formData.prevPassword.trim().length === 0) setTypePass(true);
-  }
-
-  function handlePictureChange(e) {
-    const reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = () => {
-      setFormData((prev) => ({
-        ...prev,
-        picture: reader.result,
-      }));
-      console.log(reader.result);
-    };
-    reader.onerror = (err) => {
-      console.log("Error", err);
-    };
   }
 }

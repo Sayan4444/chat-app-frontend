@@ -7,12 +7,13 @@ import Spinner from "../../components/Spinner";
 import { useRouter } from "next/navigation";
 import { useContextProvider } from "@/app/Context/Store";
 import { toastError } from "@/app/utils/toast";
+import handlePictureChange from "@/app/utils/handlePictureChange";
 
 export default function Signup() {
   const { setUserData } = useContextProvider();
   const router = useRouter();
   const [loading, setloading] = useState(false);
-  const [formData, setformData] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
@@ -20,56 +21,7 @@ export default function Signup() {
     picture: "",
   });
   const [typePass, setTypePass] = useState(true);
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    const { name, email, password, confirmPassword } = formData;
-    try {
-      setloading(true);
-      if (!name || !email || !password || !confirmPassword)
-        throw new Error("Fill all fields properly");
-      if (password !== confirmPassword)
-        throw new Error("password and confirm password not matching");
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData }),
-      });
-
-      const resData = await res.json();
-      if (resData.success === "false") throw new Error(resData.error);
-      setUserData(resData.user);
-      router.push("/");
-    } catch (error) {
-      toastError(error.message);
-    }
-    setloading(false);
-  };
-
-  const changeHandler = (e) => {
-    setformData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    if (formData.password.length === 0) setTypePass(true);
-  };
-
-  const handlePictureChange = (e) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = () => {
-      setformData((prev) => ({
-        ...prev,
-        picture: reader.result,
-      }));
-      console.log(reader.result);
-    };
-    reader.onerror = (err) => {
-      console.log("Error", err);
-    };
-  };
+  const [pictureUploadLoader, setPictureUploadLoader] = useState(false);
 
   const inputClassName =
     "focus:outline-none border-2 border-gray-200 px-4 py-2 mt-2 focus:border-blue-500 rounded-xl w-full";
@@ -138,12 +90,26 @@ export default function Signup() {
           onChange={changeHandler}
         />
         <div className={titleClassName}>Upload Picture</div>
-        <input
-          type='file'
-          name='picture'
-          accept='image/*'
-          onChange={handlePictureChange}
-        />
+        <div className='relative'>
+          <input
+            type='file'
+            name='picture'
+            accept='image/*'
+            onChange={(e) =>
+              handlePictureChange(
+                e,
+                setPictureUploadLoader,
+                formData.picture,
+                setFormData
+              )
+            }
+          />
+          {pictureUploadLoader && (
+            <span className='absolute right-40'>
+              <Spinner />
+            </span>
+          )}
+        </div>
         {loading && (
           <button
             className='bg-blue-300 w-full rounded-xl text-center py-3 text-white mt-6 hover:cursor-not-allowed'
@@ -156,7 +122,12 @@ export default function Signup() {
         {!loading && (
           <button
             type='submit'
-            className='bg-blue-600 w-full rounded-xl text-center py-3 text-white mt-6'
+            disabled={pictureUploadLoader}
+            className={` w-full rounded-xl text-center py-3 text-white mt-6 ${
+              pictureUploadLoader
+                ? "hover:cursor-not-allowed bg-blue-300"
+                : "bg-blue-600"
+            }`}
           >
             Signup
           </button>
@@ -165,5 +136,38 @@ export default function Signup() {
       <ToastContainer />
     </>
   );
+
+  async function submitHandler(e) {
+    e.preventDefault();
+    const { name, email, password, confirmPassword } = formData;
+    try {
+      setloading(true);
+      if (!name || !email || !password || !confirmPassword)
+        throw new Error("Fill all fields properly");
+      if (password !== confirmPassword)
+        throw new Error("password and confirm password not matching");
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData }),
+      });
+
+      const resData = await res.json();
+      if (resData.success === "false") throw new Error(resData.error);
+      setUserData(resData.user);
+      router.push("/");
+    } catch (error) {
+      toastError(error.message);
+    }
+    setloading(false);
+  }
+  function changeHandler(e) {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+    if (formData.password.length === 0) setTypePass(true);
+  }
 }
-// TODO: remove all console.log
