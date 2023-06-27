@@ -113,6 +113,7 @@ export default function SelectedChat({
       sender: userData,
       content: message,
       chatId: chatBoxInfo._id,
+      createdAt: new Date(),
     };
     socket.emit("send_message", messageObj);
     handleMsgsUi(messageObj);
@@ -138,14 +139,3 @@ export default function SelectedChat({
     return chatBoxInfo.chatName;
   }
 }
-
-// let index;
-// for (let i = 0; i < cacheMessages.length; i++) {
-//   const msg = cacheMessages[i];
-//   console.log(msg[0].chat, chatId);
-//   if (msg[0].chat === chatId) {
-//     index = i;
-//     break;
-//   }
-// }
-//1st message

@@ -22,8 +22,12 @@ export async function PUT(req) {
         const message = await messageData();
         await Message.create(message);
 
+        const latestMessage = await Message.findOne().sort({ _id: -1 }).limit(1);
+        await Chat.findByIdAndUpdate({ _id: latestMessage.chat }, {
+            latestMessage
+        })
 
-        console.log("DB reset");
+
         return NextResponse.json({ success: 'true' })
     } catch (error) {
         return NextResponse.json({ success: 'false', error: error.message }, { status: 404 })

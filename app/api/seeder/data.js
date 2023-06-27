@@ -63,7 +63,8 @@ export const messageData = async () => {
     const sayanGuestChatId = await Chat.findOne({
         isGroupChat: false,
         users: { $all: [sayanUserId, guestUserId] }
-    })
+    }).select("_id")
+
     return [
         {
             "sender": sayanUserId,

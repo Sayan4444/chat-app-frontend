@@ -15,8 +15,9 @@ export default function ProfileModal({ type }) {
   if (type === "signedin-profile") {
     data = userData;
     setShowModal = setShowProfileModal;
-  } else {
-    data = chatBoxInfo;
+  } else if (type === "selected-user") {
+    if (chatBoxInfo.users[0]._id !== userData._id) data = chatBoxInfo.users[0];
+    else data = chatBoxInfo.users[1];
     setShowModal = setShowSelectedUserProfileModal;
   }
 
@@ -26,7 +27,7 @@ export default function ProfileModal({ type }) {
       <Modal setShowModal={setShowModal}>
         <div className='flex flex-col items-center space-y-6'>
           <div className='text-4xl'>{name}</div>
-          <div className=''>
+          <div>
             <Image
               src={picture}
               width={100}
