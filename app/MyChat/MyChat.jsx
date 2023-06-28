@@ -33,8 +33,14 @@ export default function ChatUsers() {
     if (selectedChatIndex === -1) return;
     const chat = chats[selectedChatIndex];
     setChatBoxInfo(chat);
+  }, [chats]);
+
+  useEffect(() => {
+    if (selectedChatIndex === -1) return;
+    const chat = chats[selectedChatIndex];
+    setChatBoxInfo(chat);
     getMessages(chat._id);
-  }, [selectedChatIndex, chats]);
+  }, [selectedChatIndex]);
 
   return (
     <>
