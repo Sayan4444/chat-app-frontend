@@ -8,7 +8,8 @@ import { useContextProvider } from "../Context/Store";
 import searchUser from "../utils/searchUser";
 
 export default function SideDrawer() {
-  const { sideDrawerActive, setSideDrawerActive } = useContextProvider();
+  const { sideDrawerActive, setSideDrawerActive, userData } =
+    useContextProvider();
   const [userName, setUserName] = useState("");
   const [userLoading, setUserLoading] = useState(false);
   const [users, setUsers] = useState([]); //searched users
@@ -16,7 +17,13 @@ export default function SideDrawer() {
 
   useEffect(() => {
     let timeoutId = setTimeout(async () => {
-      await searchUser(setUsers, setErrorMessage, setUserLoading, userName);
+      await searchUser(
+        userData._id,
+        setUsers,
+        setErrorMessage,
+        setUserLoading,
+        userName
+      );
     }, 300);
     return () => {
       if (timeoutId) clearTimeout(timeoutId);

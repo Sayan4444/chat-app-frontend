@@ -1,4 +1,4 @@
-export default async function searchUser(setUsers, setErrorMessage = null, setUserLoading, userName) {
+export default async function searchUser(loggedInUserId, setUsers, setErrorMessage = null, setUserLoading, userName) {
     setUsers([]);
     if (setErrorMessage) setErrorMessage("");
     setUserLoading(true);
@@ -20,7 +20,9 @@ export default async function searchUser(setUsers, setErrorMessage = null, setUs
         return;
     }
     // Case 3: input field value is true
-    const { users } = resData;
+    let { users } = resData;
+    users = users.filter(user => user._id !== loggedInUserId);
+
     setUserLoading(false);
     setUsers(users);
 }

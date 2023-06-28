@@ -90,6 +90,7 @@ export default function SelectedChat({
     });
     //update UI in chatBox
     setSelectedMessages((prev) => [...prev, messageObj]);
+    console.log("hit");
     //update cached message
     setCacheMessages((prevCacheMessages) => {
       const { chatId } = messageObj;
@@ -105,6 +106,7 @@ export default function SelectedChat({
       updatedCacheMessages[index] = [...prevCacheMessages[index], messageObj];
       return updatedCacheMessages;
     });
+    console.log("hit");
   }
 
   async function sendMessage() {

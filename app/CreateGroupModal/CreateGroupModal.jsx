@@ -10,7 +10,7 @@ import Spinner from "../components/Spinner";
 import { toastError, toastSuccess } from "../utils/toast";
 
 export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
-  const { setChats, setSelectedChatIndex } = useContextProvider();
+  const { setChats, setSelectedChatIndex, userData } = useContextProvider();
   const [groupName, setGroupName] = useState("");
   const [userName, setUserName] = useState("");
   const [users, setUsers] = useState([]); //searched users
@@ -20,7 +20,7 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
 
   useEffect(() => {
     let timeoutId = setTimeout(async () => {
-      await searchUser(setUsers, null, setUserLoading, userName);
+      await searchUser(userData._id, setUsers, null, setUserLoading, userName);
     }, 300);
     return () => {
       if (timeoutId) clearTimeout(timeoutId);

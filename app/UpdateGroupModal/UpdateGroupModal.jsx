@@ -18,7 +18,13 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
 
   useEffect(() => {
     let timeoutId = setTimeout(async () => {
-      await searchUser(setSearchedUsers, null, setUserLoading, userName);
+      await searchUser(
+        userData._id,
+        setSearchedUsers,
+        null,
+        setUserLoading,
+        userName
+      );
     }, 300);
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
