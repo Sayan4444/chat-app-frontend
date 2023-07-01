@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Home() {
   const { userData } = useContextProvider();
   if (Object.keys(userData).length === 0) return <Loading />;
+
   return (
     <>
       <SideDrawer />

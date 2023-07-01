@@ -14,10 +14,16 @@ export async function GET(req) {
         .populate('groupAdmin')
         .populate({
             path: 'latestMessage',
-            populate: {
-                path: 'sender',
-                model: 'User' // Replace with the actual model name for the User object
-            }
+            populate: [
+                {
+                    path: 'sender',
+                    model: 'User' // Replace with the actual model name for the User object
+                },
+                {
+                    path: 'chat',
+                    model: 'Chat'
+                }
+            ]
         })
         .sort({ updatedAt: -1 })
     if (!getAllChats) {

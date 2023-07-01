@@ -79,7 +79,7 @@ export default function ChatUsers() {
   );
 
   async function getMessages(chatId) {
-    const msgs = cacheMessages.find((msg) => msg[0]?.chat === chatId);
+    const msgs = cacheMessages.find((msg) => msg[0]?.chat._id === chatId);
     if (msgs) {
       if (!msgs[0]._id) return setSelectedMessages([]);
       return setSelectedMessages(msgs);
@@ -92,7 +92,7 @@ export default function ChatUsers() {
     const { messages } = resData;
     setSelectedMessages(messages);
     if (messages.length === 0) {
-      return setCacheMessages((prev) => [...prev, [{ chat: chatId }]]);
+      return;
     }
     setCacheMessages((prev) => [...prev, messages]);
   }

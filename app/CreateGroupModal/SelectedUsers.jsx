@@ -1,7 +1,6 @@
 import { RxCross2 } from "react-icons/rx";
 
 export default function SelectedUsers({
-  selectedUsers,
   selectedUser,
   setSelectedUsers,
   index,
@@ -18,9 +17,9 @@ export default function SelectedUsers({
     </>
   );
   function removeSelectedUser() {
-    let newArray = [...selectedUsers];
-    newArray.splice(index, 1);
-    console.log(newArray);
-    setSelectedUsers(newArray);
+    setSelectedUsers((prev) => {
+      prev.splice(index, 1);
+      return [...prev];
+    });
   }
 }

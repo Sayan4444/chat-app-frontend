@@ -4,7 +4,7 @@ import Backdrop from "../components/Backdrop";
 import { useEffect, useState } from "react";
 import SearchedUser from "./SearchedUser";
 import Loading from "./Loading";
-import { useContextProvider } from "../Context/Store";
+import { socket, useContextProvider } from "../Context/Store";
 import searchUser from "../utils/searchUser";
 
 export default function SideDrawer() {
@@ -14,6 +14,10 @@ export default function SideDrawer() {
   const [userLoading, setUserLoading] = useState(false);
   const [users, setUsers] = useState([]); //searched users
   const [errMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    socket.emit("setup", userData._id);
+  }, []);
 
   useEffect(() => {
     let timeoutId = setTimeout(async () => {

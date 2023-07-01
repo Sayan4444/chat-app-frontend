@@ -1,5 +1,7 @@
 "use client";
 import { useState, createContext, useContext, useEffect } from "react";
+import io from "socket.io-client";
+export const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
 
 export const Context = createContext();
 export const useContextProvider = () => useContext(Context);
@@ -22,6 +24,7 @@ export default function Store({ children }) {
     useState(false); //Eye
   const [showUpdateUserSettingsModal, setShowUpdateUserSettingsModal] =
     useState(false); //Bell Botton
+  const [notifications, setNotifications] = useState([]); //messages
 
   const [sideDrawerActive, setSideDrawerActive] = useState(false); //Side Drawer
 
@@ -34,6 +37,18 @@ export default function Store({ children }) {
       setUserData(userData.user);
     })();
   }, []);
+
+  useEffect(() => {
+    socket.on("receive_message", (messageObj) => {
+      if (selectedChatIndex === -1 || chatBoxInfo._id !== messageObj.chat._id) {
+        return setNotifications((prev) => [...prev, messageObj]);
+      }
+    });
+
+    return () => {
+      socket.off("receive_message");
+    };
+  }, [socket, selectedChatIndex, chatBoxInfo]);
 
   const obj = {
     userData,
@@ -64,6 +79,8 @@ export default function Store({ children }) {
     setChatboxLoader,
     cacheMessages,
     setCacheMessages,
+    notifications,
+    setNotifications,
   };
   return <Context.Provider value={obj}>{children}</Context.Provider>;
 }

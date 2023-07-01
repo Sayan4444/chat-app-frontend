@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import ShowMessages from "./ShowMessages";
 import { useContextProvider } from "../Context/Store";
-import io from "socket.io-client";
-const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
+// import io from "socket.io-client";
+// const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
+import { socket } from "../Context/Store";
 
 export default function SelectedChat({
   type,
@@ -26,10 +27,6 @@ export default function SelectedChat({
     const container = document.getElementById("arrayContainer");
     container.scrollTop = container.scrollHeight;
   }, [selectedMessages]);
-
-  useEffect(() => {
-    socket.emit("join_room", chatBoxInfo._id);
-  }, []);
 
   useEffect(() => {
     socket.on("receive_message", (messageObj) => {
@@ -81,32 +78,33 @@ export default function SelectedChat({
 
   function handleMsgsUi(messageObj) {
     //update latest message in chats
-    setChats((prev) => {
+    setChats((chats) => {
       const chatIndex = chats.findIndex(
-        (chat) => chat._id === messageObj.chatId
+        (chat) => chat._id === messageObj.chat._id
       );
-      prev[chatIndex].latestMessage = messageObj;
-      return [...prev];
+      if (!chats[chatIndex].latestMessage) {
+        chats[chatIndex].latestMessage = messageObj;
+      }
+      chats[chatIndex].latestMessage.sender = messageObj.sender;
+      chats[chatIndex].latestMessage.content = messageObj.content;
+      return [...chats];
     });
+
     //update UI in chatBox
-    setSelectedMessages((prev) => [...prev, messageObj]);
-    console.log("hit");
+    if (chatBoxInfo._id === messageObj.chat._id)
+      setSelectedMessages((prev) => [...prev, messageObj]);
     //update cached message
     setCacheMessages((prevCacheMessages) => {
-      const { chatId } = messageObj;
       const index = prevCacheMessages.findIndex(
-        (msg) => msg[0]?.chat === chatId
+        (msg) => msg[0]?.chat._id === messageObj.chat._id
       );
 
-      if (index === -1) {
-        return [...prevCacheMessages, [messageObj]];
-      }
+      if (index === -1) return prevCacheMessages;
 
       const updatedCacheMessages = [...prevCacheMessages];
       updatedCacheMessages[index] = [...prevCacheMessages[index], messageObj];
       return updatedCacheMessages;
     });
-    console.log("hit");
   }
 
   async function sendMessage() {
@@ -114,7 +112,7 @@ export default function SelectedChat({
       _id: Math.random() * Math.pow(10, 16),
       sender: userData,
       content: message,
-      chatId: chatBoxInfo._id,
+      chat: chatBoxInfo,
       createdAt: new Date(),
     };
     socket.emit("send_message", messageObj);

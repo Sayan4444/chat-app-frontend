@@ -1,6 +1,11 @@
 "use client";
+
+import { useContextProvider } from "../Context/Store";
+
 export default function Chat({ selected, loggedinId, chat }) {
   const { latestMessage } = chat;
+  const { setNotifications } = useContextProvider();
+  manageNotification();
 
   const chatName = getChatName();
   return (
@@ -25,6 +30,19 @@ export default function Chat({ selected, loggedinId, chat }) {
       </div>
     </>
   );
+
+  function manageNotification() {
+    if (selected) {
+      setNotifications((notifications) => {
+        const index = notifications.findIndex(
+          (notification) => notification.chat._id === chat._id
+        );
+        if (index === -1) return notifications;
+        notifications.splice(index, 1);
+        return [...notifications];
+      });
+    }
+  }
 
   function getChatName() {
     if (chat.isGroupChat === true) return chat.chatName;

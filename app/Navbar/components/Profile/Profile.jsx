@@ -5,16 +5,25 @@ import DropdownMenu from "./DropdownMenu";
 import { useState } from "react";
 import Image from "next/image";
 import { useContextProvider } from "@/app/Context/Store";
+import NotificationsMenu from "./NotificationsMenu";
+import NotificationNumber from "./NotificationNumber";
 
 export default function Profile() {
-  const { userData } = useContextProvider();
+  const { userData, notifications, setNotifications } = useContextProvider();
   const { picture } = userData;
   const [showDropdown, setShowdropDown] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   return (
     <>
       <div className='flex w-24 relative'>
-        <button className='hoverEffect hover:scale-125'>
-          <FaBell />
+        <button
+          onClick={() => setShowNotifications(true)}
+          className='hoverEffect hover:scale-125 relative'
+        >
+          <FaBell size={25} />
+          {notifications.length !== 0 && (
+            <NotificationNumber number={notifications.length} />
+          )}
         </button>
         <button
           onClick={() => setShowdropDown(true)}
@@ -30,6 +39,13 @@ export default function Profile() {
           <MdArrowDropDown />
         </button>
         {showDropdown && <DropdownMenu setShowdropDown={setShowdropDown} />}
+        {showNotifications && (
+          <NotificationsMenu
+            setShowNotifications={setShowNotifications}
+            notifications={notifications}
+            setNotifications={setNotifications}
+          />
+        )}
       </div>
     </>
   );
