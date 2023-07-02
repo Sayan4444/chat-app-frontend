@@ -47,7 +47,7 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
           />
           {/* Showing users which are selected to be added to group */}
           {selectedUsers.length !== 0 && (
-            <div className='flex space-x-2 self-start'>
+            <div className='flex flex-wrap gap-2 self-start'>
               {selectedUsers.map((selectedUser, index) => (
                 <SelectedUsers
                   selectedUsers={selectedUsers}
@@ -64,7 +64,7 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
           {/* Showing users on the basis of search in the search box */}
           <div className='w-full'>
             {users.length !== 0 && (
-              <div className='flex flex-col space-y-2'>
+              <div className='flex flex-col space-y-2 max-h-36 laptop:max-h-60 overflow-y-auto scrollbar-hide'>
                 {users.map((user) => (
                   <SearchedUser
                     user={user}

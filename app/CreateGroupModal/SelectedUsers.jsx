@@ -5,7 +5,7 @@ export default function SelectedUsers({
   setSelectedUsers,
   index,
 }) {
-  const { name, _id } = selectedUser;
+  const { name } = selectedUser;
   return (
     <>
       <div className='bg-violet-700 text-white flex space-x-2 items-center pl-3 pr-2 py-2 rounded-xl'>

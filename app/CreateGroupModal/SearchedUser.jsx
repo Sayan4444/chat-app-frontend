@@ -34,7 +34,7 @@ export default function SearchedUser({
       const selectedUser = selectedUsers[index];
       if (selectedUser._id === _id) return;
     }
-    setSelectedUsers((prev) => [{ name, _id }, ...prev]);
+    setSelectedUsers((prev) => [...prev, { name, _id }]);
     return;
   }
 }

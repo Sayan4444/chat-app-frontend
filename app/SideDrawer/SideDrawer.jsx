@@ -67,7 +67,7 @@ export default function SideDrawer() {
         </div>
         {/* Displaying users array */}
         {users.length !== 0 && (
-          <div className='mx-4 flex flex-col space-y-3 scrollable-y-auto scrollbar-hide'>
+          <div className='mx-4 flex flex-col space-y-3 h-[73%] laptop:h-[80%] desktop:h-[85%] overflow-y-auto scrollbar-hide'>
             {users.map((user) => (
               <SearchedUser user={user} key={user._id} />
             ))}

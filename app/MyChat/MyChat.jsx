@@ -67,7 +67,7 @@ export default function ChatUsers() {
         {myChatsLoader && <Loading />}
         {/* Showing Chats */}
         {chats.length !== 0 && !myChatsLoader && (
-          <div className='flex flex-col space-y-2 mt-7'>
+          <div className='flex flex-col space-y-2 mt-7 h-[80%] laptop:h-[88%] desktop:h-[91%] overflow-y-auto scrollbar-hide'>
             {chats.map((chat, index) => (
               <div
                 onClick={() => {

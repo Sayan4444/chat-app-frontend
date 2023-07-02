@@ -36,7 +36,8 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
       <Modal setShowModal={setShowUpdateGroupChatModal}>
         <div className='px-8'>
           <div className='text-center text-3xl'>Group Settings</div>
-          <div className='flex space-x-2 mt-10'>
+          {/* Names of Group Members */}
+          <div className='flex flex-wrap gap-2 mt-10'>
             {users.map((user) => (
               <GroupUser
                 user={user}
@@ -46,6 +47,7 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
               />
             ))}
           </div>
+          {/* Names of Group Members */}
           <div className='flex w-full space-x-4 my-4'>
             <input
               type='text'
@@ -72,7 +74,7 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
           {/* Showing users on the basis of search in the search box */}
           <div className='w-full'>
             {searchedUsers.length !== 0 && (
-              <div className='flex flex-col space-y-2 my-4'>
+              <div className='flex flex-col space-y-2 max-h-36 laptop:max-h-60 overflow-y-auto scrollbar-hide mt-4'>
                 {searchedUsers.map((searchedUser) => (
                   <SearchedUser
                     searchedUser={searchedUser}
