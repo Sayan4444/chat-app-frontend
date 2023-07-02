@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useContextProvider } from "../Context/Store";
+import useCustomHook from "../hooks/useCustomHook";
 
 export default function SearchedUser({ user }) {
   const {
@@ -9,6 +10,7 @@ export default function SearchedUser({ user }) {
     setSelectedChatIndex,
     setMyChatsLoader,
   } = useContextProvider();
+  const { updateSelectedChatIndex } = useCustomHook();
   const { name, picture, _id } = user;
   return (
     <>
@@ -45,7 +47,7 @@ export default function SearchedUser({ user }) {
         chat.users[0]._id === selectedUserId ||
         chat.users[1]._id === selectedUserId
       )
-        return setSelectedChatIndex(index);
+        return updateSelectedChatIndex(index);
     }
     setMyChatsLoader(true);
     //Creating new chat
@@ -56,7 +58,7 @@ export default function SearchedUser({ user }) {
     const resData = await res.json();
     const { chat } = resData;
     setChats((prev) => [chat, ...prev]);
-    setSelectedChatIndex(0);
+    updateSelectedChatIndex(0);
     setMyChatsLoader(false);
   }
 }

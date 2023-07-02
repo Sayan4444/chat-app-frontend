@@ -1,4 +1,5 @@
 import { useContextProvider } from "@/app/Context/Store";
+import useCustomHook from "@/app/hooks/useCustomHook";
 
 export default function NotificationsMenu({
   setShowNotifications,
@@ -9,6 +10,7 @@ export default function NotificationsMenu({
     "hover:bg-gray-200 transition-all duration-300 text-left py-3 pl-2";
   const { setSelectedChatIndex, chats, setShowMyChatMobile } =
     useContextProvider();
+  const { updateSelectedChatIndex } = useCustomHook();
   return (
     <>
       <div
@@ -42,8 +44,7 @@ export default function NotificationsMenu({
     const chatIndex = chats.findIndex(
       (chat) => chat._id === notification.chat._id
     );
-    setSelectedChatIndex(chatIndex);
+    updateSelectedChatIndex(chatIndex);
     setShowNotifications(false);
-    setShowMyChatMobile(false);
   }
 }

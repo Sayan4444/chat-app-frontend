@@ -5,6 +5,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { useContextProvider } from "../Context/Store";
 import Loading from "./Loading";
 import Chat from "./Chat";
+import useCustomHook from "../hooks/useCustomHook";
 
 export default function ChatUsers() {
   const {
@@ -12,7 +13,6 @@ export default function ChatUsers() {
     chats,
     setChats,
     selectedChatIndex,
-    setSelectedChatIndex,
     setChatBoxInfo,
     setShowCreateGroupChatModal,
     setSelectedMessages,
@@ -22,7 +22,6 @@ export default function ChatUsers() {
     cacheMessages,
     setCacheMessages,
     showMyChatMobile,
-    setShowMyChatMobile,
   } = useContextProvider();
 
   useEffect(() => {
@@ -43,6 +42,8 @@ export default function ChatUsers() {
     setChatBoxInfo(chat);
     getMessages(chat._id);
   }, [selectedChatIndex]);
+
+  const { updateSelectedChatIndex } = useCustomHook();
 
   return (
     <>
@@ -71,8 +72,7 @@ export default function ChatUsers() {
             {chats.map((chat, index) => (
               <div
                 onClick={() => {
-                  setShowMyChatMobile(false);
-                  setSelectedChatIndex(index);
+                  updateSelectedChatIndex(index);
                 }}
                 key={chat._id}
               >

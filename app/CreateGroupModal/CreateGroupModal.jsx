@@ -8,9 +8,10 @@ import SelectedUsers from "./SelectedUsers";
 import { useContextProvider } from "../Context/Store";
 import Spinner from "../components/Spinner";
 import { toastError, toastSuccess } from "../utils/toast";
+import useCustomHook from "../hooks/useCustomHook";
 
 export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
-  const { setChats, setSelectedChatIndex, userData } = useContextProvider();
+  const { setChats, userData } = useContextProvider();
   const [groupName, setGroupName] = useState("");
   const [userName, setUserName] = useState("");
   const [users, setUsers] = useState([]); //searched users
@@ -26,6 +27,8 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, [userName]);
+
+  const { updateSelectedChatIndex } = useCustomHook();
   return (
     <>
       <Modal setShowModal={setShowCreateGroupChatModal}>
@@ -94,7 +97,7 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
     else if (selectedUsers.length <= 1)
       setErrorMessage = "Select minimum 3 users";
     if (setErrorMessage) {
-      toastError(setErrorMessage);
+      return toastError(setErrorMessage);
     }
     setCreateChatLoader(true);
     const res = await fetch("/api/chat/group", {
@@ -104,7 +107,8 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
     const resData = await res.json();
     const { chat } = resData;
     setChats((prev) => [chat, ...prev]);
-    setSelectedChatIndex(0);
+    updateSelectedChatIndex(0);
+
     toastSuccess("Group Chat Created");
     setCreateChatLoader(false);
     setShowCreateGroupChatModal(false);
