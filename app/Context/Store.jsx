@@ -28,6 +28,8 @@ export default function Store({ children }) {
 
   const [sideDrawerActive, setSideDrawerActive] = useState(false); //Side Drawer
 
+  const [showMyChatMobile, setShowMyChatMobile] = useState(true); //only for mobile screens
+
   const [myChatsLoader, setMyChatsLoader] = useState(false);
   const [chatboxLoader, setChatboxLoader] = useState(false);
 
@@ -81,6 +83,8 @@ export default function Store({ children }) {
     setCacheMessages,
     notifications,
     setNotifications,
+    showMyChatMobile,
+    setShowMyChatMobile,
   };
   return <Context.Provider value={obj}>{children}</Context.Provider>;
 }

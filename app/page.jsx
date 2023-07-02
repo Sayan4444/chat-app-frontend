@@ -19,7 +19,7 @@ export default function Home() {
     <>
       <SideDrawer />
       <Navbar />
-      <div className='flex space-x-4 mx-3 h-screen'>
+      <div className='flex laptop:space-x-4 mx-3 h-screen'>
         <MyChat />
         <Chatbox />
       </div>

@@ -15,7 +15,7 @@ export default function Profile() {
   const [showNotifications, setShowNotifications] = useState(false);
   return (
     <>
-      <div className='flex w-24 relative'>
+      <div className='flex relative'>
         <button
           onClick={() => setShowNotifications(true)}
           className='hoverEffect hover:scale-125 relative'
@@ -27,7 +27,7 @@ export default function Profile() {
         </button>
         <button
           onClick={() => setShowdropDown(true)}
-          className='flex items-center px-3 py-2 ml-3 rounded-xl hover:bg-gray-300 hoverEffect'
+          className='flex items-center py-2 ml-3 rounded-xl hover:bg-gray-300 hoverEffect'
         >
           <Image
             src={picture}

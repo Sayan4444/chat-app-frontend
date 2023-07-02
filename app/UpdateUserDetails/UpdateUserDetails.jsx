@@ -23,7 +23,7 @@ export default function UpdateUserDetails({ setShowUpdateUserSettingsModal }) {
   return (
     <Modal setShowModal={setShowUpdateUserSettingsModal}>
       <div className='flex flex-col items-center space-y-6'>
-        <div className='text-4xl'>User Settings</div>
+        <div className='text-4xl'>My Settings</div>
       </div>
       <form onSubmit={submitHandler} className='mx-5 mt-3'>
         <div>Name</div>

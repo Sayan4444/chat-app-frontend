@@ -7,7 +7,8 @@ export default function NotificationsMenu({
 }) {
   const buttonStyles =
     "hover:bg-gray-200 transition-all duration-300 text-left py-3 pl-2";
-  const { setSelectedChatIndex, chats } = useContextProvider();
+  const { setSelectedChatIndex, chats, setShowMyChatMobile } =
+    useContextProvider();
   return (
     <>
       <div
@@ -43,5 +44,6 @@ export default function NotificationsMenu({
     );
     setSelectedChatIndex(chatIndex);
     setShowNotifications(false);
+    setShowMyChatMobile(false);
   }
 }

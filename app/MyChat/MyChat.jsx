@@ -21,6 +21,8 @@ export default function ChatUsers() {
     setChatboxLoader,
     cacheMessages,
     setCacheMessages,
+    showMyChatMobile,
+    setShowMyChatMobile,
   } = useContextProvider();
 
   useEffect(() => {
@@ -44,7 +46,11 @@ export default function ChatUsers() {
 
   return (
     <>
-      <div className='bg-white mb-20 mt-4 px-6 py-4 w-[55%] rounded-xl relative'>
+      <div
+        className={`bg-white mb-20 mt-4 px-6 py-4 w-full laptop:w-[55%] rounded-xl relative ${
+          showMyChatMobile ? "block" : "hidden"
+        } laptop:block`}
+      >
         <div className='flex justify-between w-full'>
           <div className='text-2xl'>My Chats</div>
           <button
@@ -63,7 +69,13 @@ export default function ChatUsers() {
         {chats.length !== 0 && !myChatsLoader && (
           <div className='flex flex-col space-y-2 mt-7'>
             {chats.map((chat, index) => (
-              <div onClick={() => setSelectedChatIndex(index)} key={chat._id}>
+              <div
+                onClick={() => {
+                  setShowMyChatMobile(false);
+                  setSelectedChatIndex(index);
+                }}
+                key={chat._id}
+              >
                 <Chat
                   chat={chat}
                   loggedinId={userData._id}

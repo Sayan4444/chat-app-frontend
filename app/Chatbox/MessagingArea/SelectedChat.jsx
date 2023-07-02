@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import ShowMessages from "./ShowMessages";
-import { useContextProvider } from "../Context/Store";
-// import io from "socket.io-client";
-// const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
-import { socket } from "../Context/Store";
+import { useContextProvider } from "../../Context/Store";
+import { socket } from "../../Context/Store";
+import MyChatNavigation from "../MyChatNavigation";
 
 export default function SelectedChat({
   type,
@@ -12,14 +11,8 @@ export default function SelectedChat({
   setShowModal,
   userData,
 }) {
-  const {
-    selectedMessages,
-    setSelectedMessages,
-    chats,
-    setChats,
-    selectedChatIndex,
-    setCacheMessages,
-  } = useContextProvider();
+  const { selectedMessages, setSelectedMessages, setChats, setCacheMessages } =
+    useContextProvider();
   const [message, setMessage] = useState("");
   const title = getTitle();
 
@@ -41,6 +34,9 @@ export default function SelectedChat({
   return (
     <>
       <div className='flex justify-between w-full px-6'>
+        <div className=''>
+          <MyChatNavigation />
+        </div>
         <div className='text-2xl'>{title}</div>
         <button
           className='hover:bg-gray-200 hoverEffect hover:scale-x-125 rounded-[50%] px-3 py-3'
@@ -50,7 +46,7 @@ export default function SelectedChat({
         </button>
       </div>
       <div
-        className='bg-gray-200 mx-2 my-3 h-[80%] desktop:h-[85%] rounded-xl overflow-y-auto scrollbar-hide'
+        className='bg-gray-200 mx-2 my-3 h-[73%] laptop:h-[80%] desktop:h-[85%] rounded-xl overflow-y-auto scrollbar-hide'
         id='arrayContainer'
       >
         {selectedMessages.length !== 0 && (

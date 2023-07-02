@@ -41,7 +41,7 @@ export default function CreateGroupModal({ setShowCreateGroupChatModal }) {
           <input
             type='text'
             className='focus:outline-none border-2 focus:border-blue-500  rounded-lg pl-4 py-2 w-full'
-            placeholder='Add Users eg:Sayan,Jane,John'
+            placeholder='User name'
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />

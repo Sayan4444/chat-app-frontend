@@ -43,8 +43,8 @@ export default function SideDrawer() {
       )}
       <div
         className={`fixed ${
-          sideDrawerActive ? "left-0" : "-left-1/4"
-        }  h-screen bg-white z-10 w-[20%] transition-all duration-300`}
+          sideDrawerActive ? "left-0" : "-left-[80%]"
+        }  h-screen bg-white z-10 w-[78%] laptop:w-[20%] transition-all duration-300`}
       >
         <div className='flex justify-between mx-4 mt-2 items-center'>
           <div className='text-xl font-bold'> Search Users</div>
@@ -67,7 +67,7 @@ export default function SideDrawer() {
         </div>
         {/* Displaying users array */}
         {users.length !== 0 && (
-          <div className='mx-4 flex flex-col space-y-3'>
+          <div className='mx-4 flex flex-col space-y-3 scrollable-y-auto scrollbar-hide'>
             {users.map((user) => (
               <SearchedUser user={user} key={user._id} />
             ))}

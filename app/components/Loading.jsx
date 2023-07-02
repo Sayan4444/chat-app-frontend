@@ -22,11 +22,6 @@ export default function Loading() {
       loop: true,
       autoplay: true,
       animationData: loadingBlueDot,
-      rendererSettings: {
-        preserveAspectRatio: "xMidYMid slice",
-        width: 300,
-        height: 200,
-      },
     });
     return () => {
       runningManAnimation.destroy();
@@ -35,7 +30,7 @@ export default function Loading() {
   }, []);
   return (
     <>
-      <div className='w-screen h-screen p-10'>
+      <div className='w-screen h-screen p-3'>
         <div className='bg-white w-full h-full rounded-2xl relative'>
           <div className='absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center'>
             <div ref={runningManRef} className='h-80 w-80' />
@@ -43,7 +38,7 @@ export default function Loading() {
               <span>Your messages are loading</span>
               <div
                 ref={loadingBlueDotRef}
-                className='absolute -right-60 -top-[75px]'
+                className='absolute laptop:-right-60 laptop:-top-32 -top-24 -right-40 h-80 w-80'
               />
             </div>
           </div>
@@ -52,3 +47,4 @@ export default function Loading() {
     </>
   );
 }
+// -top-[75px]

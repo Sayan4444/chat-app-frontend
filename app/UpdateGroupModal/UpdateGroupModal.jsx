@@ -49,7 +49,7 @@ export default function UpdateGroupModal({ setShowUpdateGroupChatModal }) {
           <div className='flex w-full space-x-4 my-4'>
             <input
               type='text'
-              className='focus:outline-none border-2 focus:border-blue-500  rounded-lg pl-4 py-2 w-full'
+              className='focus:outline-none border-2 focus:border-blue-500  rounded-lg pl-4 py-2 w-full placeholder:text-sm placeholder:tracking-tight placeholder:laptop:text-base placeholder:laptop:tracking-normal'
               placeholder='Update Group Name'
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
