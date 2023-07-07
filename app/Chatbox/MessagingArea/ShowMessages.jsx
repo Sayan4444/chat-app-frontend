@@ -3,7 +3,7 @@ import MessageUI from "./MessageUI";
 export default function ShowMessages({ loggedInId, selectedMessages }) {
   return (
     <>
-      <div className='flex flex-col space-y-2 mx-3 laptop:mx-10 py-3'>
+      <div className='flex flex-col space-y-2 ml-10 mr-3 laptop:mx-10 py-3'>
         {selectedMessages.length !== 0 &&
           selectedMessages.map((msg, index) => {
             if (msg.sender._id === loggedInId) {

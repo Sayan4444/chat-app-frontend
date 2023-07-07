@@ -26,7 +26,7 @@ export default function ProfileModal({ type }) {
     <>
       <Modal setShowModal={setShowModal}>
         <div className='flex flex-col items-center space-y-6'>
-          <div className='text-4xl'>{name}</div>
+          <div className='text-2xl laptop:text-4xl'>{name}</div>
           <div>
             <Image
               src={picture}
@@ -37,7 +37,7 @@ export default function ProfileModal({ type }) {
               onClick={() => window.open(picture, "_blank")}
             />
           </div>
-          <div className='text-center text-3xl'>
+          <div className='text-center text-lg laptop:text-3xl break-all'>
             <div>Email:</div>
             <div>{email}</div>
           </div>
