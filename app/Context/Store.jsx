@@ -43,14 +43,26 @@ export default function Store({ children }) {
   useEffect(() => {
     socket.on("receive_message", (messageObj) => {
       if (selectedChatIndex === -1 || chatBoxInfo._id !== messageObj.chat._id) {
-        return setNotifications((prev) => [...prev, messageObj]);
+        setChats((prev) => {
+          const chats = [...prev];
+          const chatIndex = chats.findIndex(
+            (chat) => chat._id === messageObj.chat._id
+          );
+          if (chatIndex === -1) return prev;
+          chats[chatIndex].latestMessage = messageObj;
+          return chats;
+        });
+
+        if (notifications.find((item) => item.chat._id === messageObj.chat._id))
+          return;
+        setNotifications([...notifications, messageObj]);
       }
     });
 
     return () => {
       socket.off("receive_message");
     };
-  }, [socket, selectedChatIndex, chatBoxInfo]);
+  }, [socket, selectedChatIndex, chatBoxInfo, notifications]);
 
   const obj = {
     userData,

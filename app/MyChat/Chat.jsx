@@ -1,17 +1,20 @@
 "use client";
 
+import { useEffect } from "react";
 import { useContextProvider } from "../Context/Store";
 
 export default function Chat({ selected, loggedinId, chat }) {
   const { latestMessage } = chat;
   const { setNotifications } = useContextProvider();
-  manageNotification();
+  useEffect(() => {
+    manageNotification();
+  }, []);
 
   const chatName = getChatName();
   return (
     <>
       <div
-        className={`px-3 py-2 text-left rounded-xl hover:cursor-pointer ${
+        className={`px-3 py-2 max-h-16 overflow-y-hidden text-left rounded-xl hover:cursor-pointer ${
           selected ? "bg-cyan-600 text-white" : "bg-gray-200 text-black "
         }`}
       >

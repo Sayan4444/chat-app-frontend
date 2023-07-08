@@ -5,8 +5,8 @@ import DropdownMenu from "./DropdownMenu";
 import { useState } from "react";
 import Image from "next/image";
 import { useContextProvider } from "@/app/Context/Store";
-import NotificationsMenu from "./NotificationsMenu";
-import NotificationNumber from "./NotificationNumber";
+import NotificationsMenu from "./Notification/NotificationsMenu";
+import NotificationNumber from "./Notification/NotificationNumber";
 
 export default function Profile() {
   const { userData, notifications, setNotifications } = useContextProvider();
@@ -27,7 +27,7 @@ export default function Profile() {
         </button>
         <button
           onClick={() => setShowdropDown(true)}
-          className='flex items-center py-2 ml-3 rounded-xl hover:bg-gray-300 hoverEffect'
+          className='flex items-center py-2 ml-3 rounded-xl hover:bg-gray-300 hoverEffect px-2'
         >
           <Image
             src={picture}

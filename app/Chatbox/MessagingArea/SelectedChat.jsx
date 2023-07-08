@@ -4,6 +4,7 @@ import ShowMessages from "./ShowMessages";
 import { useContextProvider } from "../../Context/Store";
 import { socket } from "../../Context/Store";
 import MyChatNavigation from "../MyChatNavigation";
+import mongoose from "mongoose";
 
 export default function SelectedChat({
   type,
@@ -11,8 +12,14 @@ export default function SelectedChat({
   setShowModal,
   userData,
 }) {
-  const { selectedMessages, setSelectedMessages, setChats, setCacheMessages } =
-    useContextProvider();
+  const {
+    selectedMessages,
+    setSelectedMessages,
+    chats,
+    setChats,
+    cacheMessages,
+    setCacheMessages,
+  } = useContextProvider();
   const [message, setMessage] = useState("");
   const title = getTitle();
 
@@ -23,12 +30,13 @@ export default function SelectedChat({
 
   useEffect(() => {
     socket.on("receive_message", (messageObj) => {
+      // console.log(messageObj.content);
       handleMsgsUi(messageObj);
     });
 
-    return () => {
-      socket.off("receive_message");
-    };
+    // return () => {
+    //   socket.off("receive_message");
+    // };
   }, [socket]);
 
   return (
@@ -63,10 +71,7 @@ export default function SelectedChat({
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className='bg-gray-300 rounded-xl w-full pl-4 py-3 focus:outline-none focus:border-2 focus:border-blue-500 '
-          onKeyDown={(event) => {
-            if (event.key !== "Enter" || message.trim().length === 0) return;
-            sendMessage();
-          }}
+          onKeyDown={sendMessage}
         />
       </div>
     </>
@@ -74,46 +79,64 @@ export default function SelectedChat({
 
   function handleMsgsUi(messageObj) {
     //update latest message in chats
-    setChats((chats) => {
+    // const chatIndex = chats.findIndex(
+    //   (chat) => chat._id === messageObj.chat._id
+    // );
+    // if (chatIndex !== -1) {
+    //   chats[chatIndex].latestMessage = messageObj;
+    //   setChats([...chats]);
+    // }
+    setChats((prev) => {
+      const chats = [...prev];
       const chatIndex = chats.findIndex(
         (chat) => chat._id === messageObj.chat._id
       );
-      if (!chats[chatIndex].latestMessage) {
-        chats[chatIndex].latestMessage = messageObj;
-      }
-      chats[chatIndex].latestMessage.sender = messageObj.sender;
-      chats[chatIndex].latestMessage.content = messageObj.content;
-      return [...chats];
+      if (chatIndex === -1) return prev;
+      chats[chatIndex].latestMessage = messageObj;
+      return chats;
     });
 
     //update UI in chatBox
     if (chatBoxInfo._id === messageObj.chat._id)
-      setSelectedMessages((prev) => [...prev, messageObj]);
+      // setSelectedMessages([...selectedMessages, messageObj]);
+      setSelectedMessages((selectedMessages) => [
+        ...selectedMessages,
+        messageObj,
+      ]);
     //update cached message
-    setCacheMessages((prevCacheMessages) => {
-      const index = prevCacheMessages.findIndex(
+    // const index = cacheMessages.findIndex(
+    //   (msg) => msg[0]?.chat._id === messageObj.chat._id
+    // );
+
+    // if (index === -1) return;
+
+    // const updatedCacheMessages = [...cacheMessages];
+    // updatedCacheMessages[index] = [...cacheMessages[index], messageObj];
+    setCacheMessages((prev) => {
+      const cacheMessages = [...prev];
+      const index = cacheMessages.findIndex(
         (msg) => msg[0]?.chat._id === messageObj.chat._id
       );
-
-      if (index === -1) return prevCacheMessages;
-
-      const updatedCacheMessages = [...prevCacheMessages];
-      updatedCacheMessages[index] = [...prevCacheMessages[index], messageObj];
-      return updatedCacheMessages;
+      if (index === -1) return prev;
+      cacheMessages[index] = [...cacheMessages[index], messageObj];
+      return cacheMessages;
     });
   }
 
-  async function sendMessage() {
+  async function sendMessage(event) {
+    if (event.key !== "Enter" || message.trim().length === 0) return;
     const messageObj = {
-      _id: Math.random() * Math.pow(10, 16),
-      sender: userData,
+      _id: Math.random() * Math.pow(10, 18),
       content: message,
-      chat: chatBoxInfo,
+      sender: { ...userData, _id: userData._id.toString() },
+      chat: { ...chatBoxInfo, _id: chatBoxInfo._id.toString() },
       createdAt: new Date(),
     };
-    socket.emit("send_message", messageObj);
+
     handleMsgsUi(messageObj);
+    socket.emit("send_message", messageObj);
     setMessage("");
+    // if (process.env.NEXT_PUBLIC_ENV === "dev") return;
     await fetch("/api/message", {
       method: "POST",
       body: JSON.stringify({

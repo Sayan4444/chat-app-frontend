@@ -20,7 +20,7 @@ export default function MessageUI({
           type === "loggedInUser"
             ? "self-end bg-sky-200"
             : "self-start bg-green-200"
-        }  px-4 py-2 rounded-2xl relative`}
+        }  px-4 py-2 rounded-2xl relative max-w-[90%] laptop:max-w-[80%] break-all`}
       >
         {displayIcon && (
           <div className='text-xs text-red-600 font-bold'>{sender.name}</div>

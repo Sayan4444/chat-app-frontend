@@ -17,7 +17,7 @@ export async function GET(req) {
             populate: [
                 {
                     path: 'sender',
-                    model: 'User' // Replace with the actual model name for the User object
+                    model: 'User'
                 },
                 {
                     path: 'chat',
@@ -31,6 +31,7 @@ export async function GET(req) {
     }
     return NextResponse.json({
         success: true,
+        length: getAllChats.length,
         chats: getAllChats
     })
 }
@@ -48,11 +49,36 @@ export async function POST(req) {
             users: {
                 $all: [loggedInUserId, otherUserId]
             }
+        }).populate('users').populate({
+            path: 'latestMessage',
+            populate: [
+                {
+                    path: 'sender',
+                    model: 'User'
+                },
+                {
+                    path: 'chat',
+                    model: 'Chat'
+                }
+            ]
         })
 
 
         if (prevChat) {
-            await prevChat.populate('users')
+            // await prevChat.populate('users')
+            // await prevChat.populate({
+            //     path: 'latestMessage',
+            //     populate: [
+            //         {
+            //             path: 'sender',
+            //             model: 'User' // Replace with the actual model name for the User object
+            //         },
+            //         {
+            //             path: 'chat',
+            //             model: 'Chat'
+            //         }
+            //     ]
+            // })
             return NextResponse.json({
                 success: 'true',
                 chat: prevChat
@@ -65,7 +91,19 @@ export async function POST(req) {
         // const createdChat = await Chat.create(chatData).populate('users')
         const createdChat = await Chat.create(chatData)
         await createdChat.populate('users')
-
+        await createdChat.populate({
+            path: 'latestMessage',
+            populate: [
+                {
+                    path: 'sender',
+                    model: 'User'
+                },
+                {
+                    path: 'chat',
+                    model: 'Chat'
+                }
+            ]
+        })
         return NextResponse.json({
             success: true,
             chat: createdChat

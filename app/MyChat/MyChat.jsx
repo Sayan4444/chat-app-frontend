@@ -22,6 +22,7 @@ export default function ChatUsers() {
     cacheMessages,
     setCacheMessages,
     showMyChatMobile,
+    setNotifications,
   } = useContextProvider();
 
   useEffect(() => {
@@ -30,17 +31,27 @@ export default function ChatUsers() {
     })();
   }, []);
 
-  useEffect(() => {
-    if (selectedChatIndex === -1) return;
-    const chat = chats[selectedChatIndex];
-    setChatBoxInfo(chat);
-  }, [chats]);
+  // useEffect(() => {
+  //   if (selectedChatIndex === -1) return;
+  //   const chat = chats[selectedChatIndex];
+  //   setChatBoxInfo(chat);
+  // }, [chats]);
 
   useEffect(() => {
     if (selectedChatIndex === -1) return;
     const chat = chats[selectedChatIndex];
     setChatBoxInfo(chat);
     getMessages(chat._id);
+    //deleting notification
+    setNotifications((prev) => {
+      const notifications = [...prev];
+      const index = notifications.findIndex(
+        (notification) => notification.chat._id === chat._id
+      );
+      if (index === -1) return prev;
+      notifications.splice(index, 1);
+      return notifications;
+    });
   }, [selectedChatIndex]);
 
   const { updateSelectedChatIndex } = useCustomHook();
@@ -102,10 +113,10 @@ export default function ChatUsers() {
     const resData = await res.json();
     if (resData.success === "false") return;
     const { messages } = resData;
-    setSelectedMessages(messages);
     if (messages.length === 0) {
       return;
     }
+    setSelectedMessages(messages);
     setCacheMessages((prev) => [...prev, messages]);
   }
 

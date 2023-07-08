@@ -11,3 +11,24 @@ Controllers
 /api/chat(POST)-> This gives you the 1-2-1 chats for the logged in user and another user id. If not present it will create one for you. Note it does not gives you the message but only the chat(the model)
 /api/chat(POST)-> This gives you all the 1-2-1 chats for the logged in user
 /api/chat/group(POST)-> Create a new group
+
+Learnings from this 
+
+1. never rely on prev in useState always modify the state itself and put it in setState
+egs: const [names,setNames]=useState([]);
+setNames([...names,"Sayan"])
+
+Note if we are using setNames in useEffect we must add names in the dependency array
+#if we dont names will only contain the initial value
+
+2. when u are passing some object to socket.emit, if that data is brought from MongoDB then we must convert the _id to String 
+egs: 
+    const messageObj = {
+      _id: Math.random() * Math.pow(10, 18),
+      content: message,
+      sender: { ...userData, _id: userData._id.toString() },
+      chat: { ...chatBoxInfo, _id: chatBoxInfo._id.toString() },
+      createdAt: new Date(),
+    };
+
+    socket.emit("send_message", messageObj);

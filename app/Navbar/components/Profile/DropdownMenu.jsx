@@ -5,8 +5,16 @@ import { useRouter } from "next/navigation";
 
 export default function DropdownMenu({ setShowdropDown }) {
   const router = useRouter();
-  const { setUserData, setShowProfileModal, setShowUpdateUserSettingsModal } =
-    useContextProvider();
+  const {
+    setUserData,
+    setSelectedMessages,
+    setCacheMessages,
+    setChatBoxInfo,
+    setSelectedChatIndex,
+    setShowProfileModal,
+    setChats,
+    setShowUpdateUserSettingsModal,
+  } = useContextProvider();
   const buttonStyles =
     "hover:bg-gray-200 transition-all duration-300 text-left py-3 pl-2";
   return (
@@ -46,6 +54,11 @@ export default function DropdownMenu({ setShowdropDown }) {
       method: "POST",
     });
     setUserData({});
+    setSelectedMessages([]);
+    setCacheMessages([]);
+    setChatBoxInfo({});
+    setSelectedChatIndex(-1);
+    setChats([]);
     router.push("/signin");
   }
 }
