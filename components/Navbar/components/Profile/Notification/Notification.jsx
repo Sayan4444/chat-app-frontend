@@ -32,14 +32,12 @@ export default function Notification({
       (chat) => chat._id === notification.chat._id
     );
     if (chatIndex === -1) {
-      //Creating new chat
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        body: JSON.stringify({ otherUserId: notification.sender._id }),
-      });
-      const resData = await res.json();
-      const { chat } = resData;
-      setChats((prev) => [chat, ...prev]);
+      //Creating new chat(in UI)
+      const res = await fetch(`/api/chat/${notification.chat._id}`);
+      const data = await res.json();
+      const newChat = data.chat;
+
+      setChats((prev) => [newChat, ...prev]);
       updateSelectedChatIndex(0);
     } else updateSelectedChatIndex(chatIndex);
     setShowNotifications(false);
