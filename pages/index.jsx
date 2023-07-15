@@ -9,7 +9,7 @@ import Navbar from "@/components//Navbar/Navbar";
 import Modals from "@/components/Modals";
 import dbConnect from "@/dbConnect/dbConnect";
 import User from "@/model/User";
-import Loading from "@/components/loading";
+import Loading from "@/components/Loading";
 import { useContextProvider } from "@/Context/Store";
 export const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
 
@@ -27,10 +27,11 @@ export default function Home({ userData }) {
   const [loading, setLoading] = useState(true);
   const {
     setUserData,
+    chats,
     setChats,
+    messages,
     setMessages,
     selectedChatIndex,
-    chats,
     notifications,
     setNotifications,
   } = useContextProvider();
@@ -43,6 +44,7 @@ export default function Home({ userData }) {
       setUserData(userData);
       setChats(chats);
       setMessages([...messages]);
+      socket.emit("setup", userData._id);
       // await new Promise((resolve) => setTimeout(resolve, 10000));
       setLoading(false);
     })();
@@ -50,20 +52,23 @@ export default function Home({ userData }) {
 
   useEffect(() => {
     socket.on("receive_message", (messageObj) => {
+      //updating latest message
+      setChats((prev) => {
+        const chats = [...prev];
+        const chatIndex = chats.findIndex(
+          (chat) => chat._id === messageObj.chat._id
+        );
+        if (chatIndex === -1) return prev;
+        chats[chatIndex].latestMessage = messageObj;
+        return chats;
+      });
+      //updating messages
+      setMessages((prev) => [...prev, messageObj]);
       if (
         selectedChatIndex === -1 ||
         chats[selectedChatIndex]._id !== messageObj.chat._id
       ) {
-        setChats((prev) => {
-          const chats = [...prev];
-          const chatIndex = chats.findIndex(
-            (chat) => chat._id === messageObj.chat._id
-          );
-          if (chatIndex === -1) return prev;
-          chats[chatIndex].latestMessage = messageObj;
-          return chats;
-        });
-
+        //setting notification
         if (notifications.find((item) => item.chat._id === messageObj.chat._id))
           return;
         setNotifications([...notifications, messageObj]);
@@ -73,7 +78,7 @@ export default function Home({ userData }) {
     return () => {
       socket.off("receive_message");
     };
-  }, [socket, selectedChatIndex, notifications]);
+  }, [socket, chats, messages, selectedChatIndex, notifications]);
 
   if (loading) return <Loading />;
   return (

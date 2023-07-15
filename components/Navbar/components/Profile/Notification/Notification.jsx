@@ -8,15 +8,9 @@ export default function Notification({
   notification,
   buttonStyles,
 }) {
-  const { chats, setChats, setMyChatsLoader } = useContextProvider();
+  const { chats, setChats } = useContextProvider();
   const { updateSelectedChatIndex } = useCustomHook();
-  const [chatsUpdated, setChatsUpdated] = useState(false);
-  useEffect(() => {
-    if (chatsUpdated) {
-      updateSelectedChatIndex(0);
-      setChatsUpdated(false);
-    }
-  }, [chatsUpdated, updateSelectedChatIndex]);
+
   return (
     <>
       <button onClick={notificationClicked} className={buttonStyles}>
@@ -38,19 +32,15 @@ export default function Notification({
       (chat) => chat._id === notification.chat._id
     );
     if (chatIndex === -1) {
-      setMyChatsLoader(true);
       //Creating new chat
       const res = await fetch("/api/chat", {
         method: "POST",
         body: JSON.stringify({ otherUserId: notification.sender._id }),
-        // body: JSON.stringify({ otherUserId: selectedUserId }),
       });
       const resData = await res.json();
       const { chat } = resData;
       setChats((prev) => [chat, ...prev]);
-      setChatsUpdated(true);
-      // updateSelectedChatIndex(0);
-      setMyChatsLoader(false);
+      updateSelectedChatIndex(0);
     } else updateSelectedChatIndex(chatIndex);
     setShowNotifications(false);
   }

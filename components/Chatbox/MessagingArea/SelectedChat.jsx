@@ -22,11 +22,11 @@ export default function SelectedChat({
     container.scrollTop = container.scrollHeight;
   }, [messages, selectedChatIndex]);
 
-  useEffect(() => {
-    socket.on("receive_message", (messageObj) => {
-      handleMsgsUi(messageObj);
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.on("receive_message", (messageObj) => {
+  //     handleMsgsUi(messageObj);
+  //   });
+  // }, [socket]);
 
   return (
     <>
@@ -112,7 +112,7 @@ export default function SelectedChat({
     return selectedChat.chatName;
   }
   function getShowMessages(messages, selectedChat) {
-    if (!selectedChat) return [];
+    if (!selectedChat || messages.length === 0) return [];
     return messages.filter((msg) => msg.chat._id === selectedChat._id);
   }
 }

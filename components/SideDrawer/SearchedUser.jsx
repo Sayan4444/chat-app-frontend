@@ -3,13 +3,7 @@ import { useContextProvider } from "@/Context/Store";
 import useCustomHook from "@/hooks/useCustomHook";
 
 export default function SearchedUser({ user }) {
-  const {
-    setSideDrawerActive,
-    chats,
-    setChats,
-    setSelectedChatIndex,
-    setMyChatsLoader,
-  } = useContextProvider();
+  const { setSideDrawerActive, chats, setChats } = useContextProvider();
   const { updateSelectedChatIndex } = useCustomHook();
   const { name, picture, _id } = user;
   return (
@@ -49,7 +43,6 @@ export default function SearchedUser({ user }) {
       )
         return updateSelectedChatIndex(index);
     }
-    setMyChatsLoader(true);
     //Creating new chat
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -59,6 +52,5 @@ export default function SearchedUser({ user }) {
     const { chat } = resData;
     setChats((prev) => [chat, ...prev]);
     updateSelectedChatIndex(0);
-    setMyChatsLoader(false);
   }
 }

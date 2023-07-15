@@ -11,7 +11,6 @@ export default function ChatUsers() {
     chats,
     selectedChatIndex,
     setShowCreateGroupChatModal,
-    myChatsLoader,
     showMyChatMobile,
     setNotifications,
   } = useContextProvider();
@@ -52,10 +51,8 @@ export default function ChatUsers() {
             </span>
           </button>
         </div>
-        {/* Loading Chats */}
-        {myChatsLoader && <Loading />}
         {/* Showing Chats */}
-        {chats.length !== 0 && !myChatsLoader && (
+        {chats.length !== 0 && (
           <div className='flex flex-col space-y-2 mt-7 h-[80%] laptop:h-[88%] desktop:h-[91%] overflow-y-auto scrollbar-hide'>
             {chats.map((chat, index) => (
               <div

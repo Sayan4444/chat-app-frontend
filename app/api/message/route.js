@@ -8,12 +8,8 @@ import Chat from "@/model/Chat";
 export async function GET(req) {
     const loggedInUser = await loggedInUserDetails(req);
     try {
-        const messages = await Message.find()
-            .populate({
-                path: "chat",
-                match: { users: { $in: [loggedInUser._id] } },
-            })
-            .populate("sender");
+        let messages = await Message.find().populate("chat").populate("sender")
+        messages = messages.filter(msg => msg.chat.users.includes(loggedInUser._id))
         if (!messages) throw new Error;
         return NextResponse.json({ success: 'true', messages })
     } catch (error) {

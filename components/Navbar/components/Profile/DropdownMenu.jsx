@@ -10,6 +10,7 @@ export default function DropdownMenu({ setShowdropDown }) {
     setShowProfileModal,
     setChats,
     setShowUpdateUserSettingsModal,
+    setNotifications,
   } = useContextProvider();
   const buttonStyles =
     "hover:bg-gray-200 transition-all duration-300 text-left py-3 pl-2";
@@ -53,6 +54,7 @@ export default function DropdownMenu({ setShowdropDown }) {
     setMessages([]);
     setSelectedChatIndex(-1);
     setChats([]);
+    setNotifications([]);
     router.push("/signin");
   }
 }
