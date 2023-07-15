@@ -5,8 +5,23 @@ import loggedInUserDetails from "../utils/loggedInUserDetails";
 import mongoose from "mongoose";
 import Chat from "@/model/Chat";
 
-export async function POST(req) {
+export async function GET(req) {
+    const loggedInUser = await loggedInUserDetails(req);
+    try {
+        const messages = await Message.find()
+            .populate({
+                path: "chat",
+                match: { users: { $in: [loggedInUser._id] } },
+            })
+            .populate("sender");
+        if (!messages) throw new Error;
+        return NextResponse.json({ success: 'true', messages })
+    } catch (error) {
+        return NextResponse.json({ success: 'false', error: error.message }, { status: 400 })
+    }
+}
 
+export async function POST(req) {
     const { content, chatId } = await req.json();
     await dbConnect();
     const user = await loggedInUserDetails(req);

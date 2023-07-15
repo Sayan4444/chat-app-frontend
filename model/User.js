@@ -48,5 +48,5 @@ UserSchema.methods.createJwtToken = async function () {
     return token;
 
 }
-const User = mongoose.models.User || mongoose.model("User", UserSchema);
+const User = mongoose.models?.User || mongoose.model("User", UserSchema);
 export default User;

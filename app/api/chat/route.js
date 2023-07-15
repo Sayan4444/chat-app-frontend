@@ -1,8 +1,8 @@
 import dbConnect from "@/dbConnect/dbConnect";
-import loggedInUserDetails from "../utils/loggedInUserDetails";
 import { NextResponse } from "next/server";
 import Chat from "@/model/Chat";
 import Message from "@/model/Message";
+import loggedInUserDetails from "../utils/loggedInUserDetails";
 
 export async function GET(req) {
     await dbConnect();
