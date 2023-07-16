@@ -39,8 +39,10 @@ export default function Home({ userData }) {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const chats = await getChats();
-      const messages = await getMessages();
+      const [chats, messages] = await Promise.all([getChats(), getMessages()]);
+
+      // const chats = await getChats();
+      // const messages = await getMessages();
       setUserData(userData);
       setChats(chats);
       setMessages([...messages]);

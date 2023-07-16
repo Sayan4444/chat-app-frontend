@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ChatDate from "./ChatDate";
+import { useContextProvider } from "@/Context/Store";
 
 export default function MessageUI({
   type,
@@ -7,6 +8,8 @@ export default function MessageUI({
   displayIcon,
   prevMessageCreatedAt,
 }) {
+  const { setClickedProfilePicData, setShowClickedProfilePicModal } =
+    useContextProvider();
   const { sender, content, createdAt } = message;
   const time = getTime(createdAt);
   const chatDate = getChatDate(createdAt);
@@ -33,7 +36,10 @@ export default function MessageUI({
             height={30}
             alt='profile picture'
             className='absolute -left-8 top-2 rounded-[50%] hover:cursor-pointer'
-            onClick={() => window.open(picture, "_blank")}
+            onClick={() => {
+              setClickedProfilePicData(sender);
+              setShowClickedProfilePicModal(true);
+            }}
           />
         )}
         <p className='text-[10px] text-right'>{time}</p>

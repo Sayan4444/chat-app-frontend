@@ -6,6 +6,7 @@ import { useContextProvider } from "@/Context/Store";
 
 export default function Modal() {
   const {
+    setShowProfileModal,
     showProfileModal,
     showSelectedUserProfileModal,
     showCreateGroupChatModal,
@@ -14,11 +15,38 @@ export default function Modal() {
     setShowUpdateGroupChatModal,
     showUpdateUserSettingsModal,
     setShowUpdateUserSettingsModal,
+    userData,
+    chats,
+    selectedChatIndex,
+    setShowSelectedUserProfileModal,
+    showClickedProfilePicModal,
+    clickedProfilePicData,
+    setShowClickedProfilePicModal,
   } = useContextProvider();
+  const selectedChat = chats[selectedChatIndex];
   return (
     <>
-      {showProfileModal && <ProfileModal type='signedin-profile' />}
-      {showSelectedUserProfileModal && <ProfileModal type='selected-user' />}
+      {/* One-two-one-chat */}
+      {showProfileModal && (
+        <ProfileModal data={userData} setShowModal={setShowProfileModal} />
+      )}
+      {showClickedProfilePicModal && (
+        <ProfileModal
+          data={clickedProfilePicData}
+          setShowModal={setShowClickedProfilePicModal}
+        />
+      )}
+      {showSelectedUserProfileModal && (
+        <ProfileModal
+          data={
+            selectedChat.users[0]._id !== userData._id
+              ? selectedChat.users[0]
+              : selectedChat.users[1]
+          }
+          setShowModal={setShowSelectedUserProfileModal}
+        />
+      )}
+      {/* One-two-one-chat */}
       {showCreateGroupChatModal && (
         <CreateGroupModal
           setShowCreateGroupChatModal={setShowCreateGroupChatModal}

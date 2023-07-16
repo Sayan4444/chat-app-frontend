@@ -1,6 +1,5 @@
 import { useContextProvider } from "@/Context/Store";
 import useCustomHook from "@/hooks/useCustomHook";
-import { useEffect, useState } from "react";
 
 export default function Notification({
   setNotifications,

@@ -22,16 +22,10 @@ export default function SelectedChat({
     container.scrollTop = container.scrollHeight;
   }, [messages, selectedChatIndex]);
 
-  // useEffect(() => {
-  //   socket.on("receive_message", (messageObj) => {
-  //     handleMsgsUi(messageObj);
-  //   });
-  // }, [socket]);
-
   return (
     <>
       <div className='flex justify-between w-full px-6'>
-        <div className=''>
+        <div className='laptop:hidden'>
           <MyChatNavigation />
         </div>
         <div className='text-2xl'>{title}</div>

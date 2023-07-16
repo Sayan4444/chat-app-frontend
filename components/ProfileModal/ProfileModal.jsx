@@ -1,29 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import Modal from "../components/Modal";
-import { useContextProvider } from "@/Context/Store";
 
-export default function ProfileModal({ type }) {
-  const {
-    userData,
-    setShowProfileModal = null,
-    setShowSelectedUserProfileModal = null,
-    chats,
-    selectedChatIndex,
-  } = useContextProvider();
-
-  let data, setShowModal;
-  const selectedChat = chats[selectedChatIndex];
-  if (type === "signedin-profile") {
-    data = userData;
-    setShowModal = setShowProfileModal;
-  } else if (type === "selected-user") {
-    if (selectedChat.users[0]._id !== userData._id)
-      data = selectedChat.users[0];
-    else data = selectedChat.users[1];
-    setShowModal = setShowSelectedUserProfileModal;
-  }
-
+export default function ProfileModal({ data, setShowModal }) {
   const { name, email, picture } = data;
   return (
     <>
