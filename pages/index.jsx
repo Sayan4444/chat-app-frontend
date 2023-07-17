@@ -82,7 +82,12 @@ export default function Home({ userData }) {
     };
   }, [socket, chats, messages, selectedChatIndex, notifications]);
 
-  if (loading) return <Loading />;
+  if (loading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
   return (
     <>
       <SideDrawer />

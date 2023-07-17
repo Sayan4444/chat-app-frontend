@@ -30,15 +30,15 @@ export default function Loading() {
   }, []);
   return (
     <>
-      <div className='w-screen h-screen p-3'>
+      <div className='w-screen h-screen p-3 overflow-hidden'>
         <div className='bg-white w-full h-full rounded-2xl relative'>
           <div className='absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center'>
             <div ref={runningManRef} className='h-80 w-80' />
-            <div className='text-4xl w-full relative mt-16'>
+            <div className='text-lg laptop:text-4xl w-full relative mt-16'>
               <span>Your messages are loading</span>
               <div
                 ref={loadingBlueDotRef}
-                className='absolute laptop:-right-60 laptop:-top-32 -top-24 -right-40 h-80 w-80'
+                className='absolute -top-14 -right-4 h-40 w-40  laptop:-right-60 laptop:-top-32 laptop:h-80 laptop:w-80'
               />
             </div>
           </div>

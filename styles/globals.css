@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply overflow-hidden bg-cover bg-[url("/background.jpg")] md:bg-[url("/background.png")];
+  @apply overflow-hidden bg-cover bg-[url("/background.jpg")] laptop:bg-[url("/background.png")];
 }
 
 .hoverEffect {
