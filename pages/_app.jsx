@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import Store from "@/Context/Store";
 import Head from "next/head";
+import ProgressBar from "@/components/ProgressBar";
 
 export default function App({ Component, pageProps }) {
   return (
@@ -13,6 +14,7 @@ export default function App({ Component, pageProps }) {
         />
         <link rel='shortcut icon' href='/icon.svg' />
       </Head>
+      <ProgressBar />
       <Store>
         <Component {...pageProps} />
       </Store>
